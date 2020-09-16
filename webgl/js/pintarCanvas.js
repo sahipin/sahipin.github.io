@@ -20,8 +20,9 @@ function main (){
         return;
     }
 
-    // Set clear color
-    gl.clearColor(1.0, 0.0, 0.0, 1.0);
+    // Color de borrado
+    gl.clearColor(0.0, 0.5, 0.0, 1.0);
+
     // Clear canvas
     gl.clear(gl.COLOR_BUFFER_BIT);
 
