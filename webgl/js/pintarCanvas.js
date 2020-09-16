@@ -6,7 +6,7 @@
 function main (){
 
     //recuperar canvas
-    var canvas = document.getElementById("canvas")
+    var canvas = document.getElementById("canvasSara")
 
     if (!canvas) {
         console.log("Error loading canvas");
@@ -21,7 +21,7 @@ function main (){
     }
 
     // Color de borrado
-    gl.clearColor(0.0, 0.5, 0.0, 1.0);
+    gl.clearColor(0.0, 1.0, 0.0, 1.0);
 
     // Clear canvas
     gl.clear(gl.COLOR_BUFFER_BIT);
