@@ -12,7 +12,7 @@ var VSHADER_SOURCE =
 
 var FSHADER_SOURCE =
     'void main(){                   \n' +
-    '  gl_FragColor = vec4(0.0,0.0,1.0,0.1);      \n' +
+    '  gl_FragColor = vec4(0.0,0.0,1.0,0.9);      \n' +
     '}                              \n';
 
 
@@ -41,11 +41,21 @@ function main() {
     gl.clear(gl.COLOR_BUFFER_BIT);
     var coordenadas = gl.getAttribLocation(gl.program, 'posicion');
 
+    // crea el buffer , lo activa y enlaza con coordenadas
+    var bufferVertices = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, bufferVertices );
+    // asignar el Buffer Object al atributo elegido
+    gl.vertexAttribPointer(coordenadas, 3, gl.FLOAT, false, 0 ,0) ;
+    //activar el atributo
+    gl.enableVertexAttribArray(coordenadas) ;
+
+
     canvas.onmousedown = function (evento) {
-        click(evento, gl, canvas, coordenadas)
+        click(evento, gl, canvas)
     }
 }
 
+/*
 var puntos = []; //Array de puntos
 function click(evento, gl, canvas, coordenadas) {
     // p.dot = d.vector*[x,y] = g.vector*[x',y'] = g.vector*A*[x,y] Que es A?
@@ -70,5 +80,37 @@ function click(evento, gl, canvas, coordenadas) {
         gl.vertexAttrib3f(coordenadas, puntos[i], puntos[i + 1], 0.0);
         gl.drawArrays(gl.POINTS, 0, 1);
     }
+
+}
+*/
+
+
+//Buffer de objetos
+
+var clicks = [];
+
+function click(evento, gl, canvas) {
+    // p.dot = d.vector*[x,y] = g.vector*[x',y'] = g.vector*A*[x,y] Que es A?
+    var x = evento.clientX;
+    var y = evento.clientY;
+    var rect = evento.target.getBoundingClientRect();
+
+    //Conversion de cordenadas
+    x = ((x - rect.left) - canvas.width / 2) * 2 / canvas.width;
+    y = (canvas.height / 2 - (y - rect.top)) * 2 / canvas.height;
+
+    //Guardar las coordenadas y copia el Array
+    clicks.push(x);    clicks.push(y);    clicks.push(0.0);
+
+    var puntos = new Float32Array(clicks);
+
+    //Borrar el canvas
+    gl.clear(gl.COLOR_BUFFER_BIT);
+
+    //rellenar el BO con las coordenadas y lo manda al proceso
+    gl.bufferData(gl.ARRAY_BUFFER, puntos, gl.STATIC_DRAW) ;
+
+    //dibujar todos los puntos de Unable
+    gl.drawArrays(gl.POINTS, 0, puntos.length/3) ;
 
 }
