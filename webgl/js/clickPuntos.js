@@ -12,7 +12,7 @@ var VSHADER_SOURCE =
 
 var FSHADER_SOURCE =
     'void main(){            			          \n' +
-    '  gl_FragColor = vec4(0.0,0.1,0.5,0.1);      \n' +
+    '  gl_FragColor = vec4(0.0,0.1,0.5,1.0);      \n' +
     '}                        				      \n';
 
 
@@ -51,7 +51,7 @@ function main() {
 var puntos = []; //Array de puntos
 
 function click(evento, gl, canvas, coordenadas) {
-    // p.dot = d.vector*[x,y] = g.vector*[x',y'] = g.vector*A*[x,y] Que es A?
+	
     var x = evento.clientX;
     var y = evento.clientY;
     var rect = evento.target.getBoundingClientRect();
