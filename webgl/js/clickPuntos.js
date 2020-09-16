@@ -6,13 +6,13 @@ var VSHADER_SOURCE =
     'attribute vec4 posicion;       \n' +
     'void main(){                   \n' +
     '  gl_Position = posicion;      \n' +
-    '  gl_PointSize = 10.0;         \n' +
+    '  gl_PointSize = 8.0;         \n' +
     '}       \n';
 
 
 var FSHADER_SOURCE =
     'void main(){            			          \n' +
-    '  gl_FragColor = vec4(0.0,0.1,0.5,0.1);      \n' +
+    '  gl_FragColor = vec4(1.0,1.0,1.0,1.0);      \n' +
     '}                        				      \n';
 
 
@@ -69,7 +69,7 @@ function click(evento, gl, canvas, coordenadas) {
 
     //Inserta las coodenadas de los puntos como atributos y los dibuja uno a uno
     for (var i = 0; i < puntos.length; i += 2) {
-        gl.vertexAttrib3f(coordenadas, puntos[i], puntos[i + 1], 0.3);
+        gl.vertexAttrib3f(coordenadas, puntos[i], puntos[i + 1], 0.9);
         gl.drawArrays(gl.POINTS, 0, 1);
     }
 
