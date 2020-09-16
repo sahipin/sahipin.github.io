@@ -12,13 +12,13 @@ var VSHADER_SOURCE =
 
 var FSHADER_SOURCE =
     'void main(){            			          \n' +
-    '  gl_FragColor = vec4(0.3,0.0,0.5,0.1);      \n' +
+    '  gl_FragColor = vec4(0.0,0.1,0.5,0.1);      \n' +
     '}                        				      \n';
 
 
 function main() {
     //Recuperar el cavas
-    var canvas = document.getElementById("canvasJaime");
+    var canvas = document.getElementById("canvasSara");
     if (!canvas) {
         console.log("Fallo de carga del canvas");
         return;
@@ -31,7 +31,7 @@ function main() {
         return;
     }
 
-    gl.clearColor(1, 0.0, 0.0, 1.0);
+    gl.clearColor(0.0, 0.0, 0.0, 0.0);
 	
     // Cargar, compilar y montar los shaders en un 'program'
     if (!initShaders(gl, VSHADER_SOURCE, FSHADER_SOURCE)) {
@@ -67,7 +67,7 @@ function click(evento, gl, canvas, coordenadas) {
     //Borrar el canvas
     gl.clear(gl.COLOR_BUGGET_BIT);
 
-    //Inserta las coodenadas de los puntos como atributos y dibujarlos uno a uno
+    //Inserta las coodenadas de los puntos como atributos y los dibuja uno a uno
     for (var i = 0; i < puntos.length; i += 2) {
         gl.vertexAttrib3f(coordenadas, puntos[i], puntos[i + 1], 0.3);
         gl.drawArrays(gl.POINTS, 0, 1);
