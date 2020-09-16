@@ -12,7 +12,7 @@ var VSHADER_SOURCE =
 
 var FSHADER_SOURCE =
     'void main(){            			          \n' +
-    '  gl_FragColor = vec4(0.0,0.1,0.5,1.0);      \n' +
+    '  gl_FragColor = vec4(0.0,0.1,0.5,0.1);      \n' +
     '}                        				      \n';
 
 
