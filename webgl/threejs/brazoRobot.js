@@ -37,7 +37,7 @@ function init() {
   // añadimos camara en el eje de coordenas mirando hacia -z
   scene.add(camera);
   // Movemos la camare respecto al sistema de referencia de la scena ( la z tiene que ser menor que la profundidad de campo, o corta la escena)
-  camera.position.set(0.5, 20, 350);
+  camera.position.set(0.5, 20, 380);
   camera.lookAt(new THREE.Vector3(0,0,0));
 
 
