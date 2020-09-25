@@ -23,7 +23,7 @@ function init() {
   // Motor de render
   renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor( new THREE.Color(0x0000AA) );
+  renderer.setClearColor( new THREE.Color(0x000011) );
   document.getElementById("container").appendChild(renderer.domElement);
 
   // Escena
@@ -39,6 +39,8 @@ function init() {
   // Movemos la camare respecto al sistema de referencia de la scena ( la z tiene que ser menor que la profundidad de campo, o corta la escena)
   camera.position.set(0.5, 20, 350);
   camera.lookAt(new THREE.Vector3(0,0,0));
+
+
 }
 
 function loadScene() {
@@ -55,11 +57,11 @@ function loadScene() {
 
   var cilindro_base = new THREE.CylinderGeometry(50, 50, 15, 80);
   var base = new THREE.Mesh(cilindro_base, material);
-  base.position.y = -150;
+  base.position.y = -60;
   robot.add(base);
 
   scene.add(robot);
-  scene.add( new THREE.AxisHelper(3) );
+  scene.add( new THREE.AxisHelper(30) );
 }
 
 function update(){
@@ -129,17 +131,72 @@ function loadBrazoRobot(){
   }
 
   // pinzas
-  var pinza = new THREE.Object3D();
   var cubo_palma = new THREE.BoxGeometry(19, 20, 4);
-  var palma = new THREE.Mesh(cubo_palma, material);
-  pinza.add(palma);
+  var tetraedro_dedos = new THREE.Geometry();
+  //Add the corners' coordinates
+  tetraedro_dedos.vertices.push(
+    new THREE.Vector3(0, 0, 4), // 0
+    new THREE.Vector3(19, 4, 2), // 1
+    new THREE.Vector3(0, 20, 4), // 2
+    new THREE.Vector3(19, 16, 2), // 3
+    new THREE.Vector3(0, 0, 0), // 4
+    new THREE.Vector3(19,4, 0), // 5
+    new THREE.Vector3(0, 20, 0), // 6
+    new THREE.Vector3(19,16,0), //
+  );
 
+  // Add vertices that form the faces. Clockwise
+  tetraedro_dedos.faces.push(
+    // front
+    new THREE.Face3(0, 3, 2),
+    new THREE.Face3(0, 1, 3),
+    // right
+    new THREE.Face3(1, 7, 3),
+    new THREE.Face3(1, 5, 7),
+    // back
+    new THREE.Face3(5, 6, 7),
+    new THREE.Face3(5, 4, 6),
+    // left
+    new THREE.Face3(4, 2, 6),
+    new THREE.Face3(4, 0, 2),
+    // top
+    new THREE.Face3(2, 7, 6),
+    new THREE.Face3(2, 3, 7),
+    // bottom
+    new THREE.Face3(4, 1, 0),
+    new THREE.Face3(4, 5, 1),
+  );
+
+  var palma = new THREE.Mesh(cubo_palma, material);
+  palma.position.y = 10;
+  palma.position.x = -10;
+  palma.position.z = 2;
+  var dedos = new THREE.Mesh(tetraedro_dedos, material);
+  var palma_der = new THREE.Mesh(cubo_palma, material);
+  palma_der.position.y = 10;
+  palma_der.position.x = -10;
+  palma_der.position.z = 2;
+  var dedos_der = new THREE.Mesh(tetraedro_dedos, material);
+
+  var pinza_der = new THREE.Object3D();
+  var pinza_izq = new THREE.Object3D();
+  pinza_der.add(dedos);
+  pinza_der.add(palma);
+  pinza_izq.add(dedos_der);
+  pinza_izq.add(palma_der);
+  pinza_der.position.y = 30;
+  pinza_der.position.x = 30;
+  pinza_der.position.z = 12;
+  pinza_izq.position.y = 50;
+  pinza_izq.position.x = 30;
+  pinza_izq.position.z = -12;
+  pinza_izq.rotation.x = Math.PI;
   // construir ante brazo
   ante_brazo.add(disco);
   ante_brazo.add(mano);
-  ante_brazo.add(palma);
+  ante_brazo.add(pinza_izq);
+  ante_brazo.add(pinza_der);
   ante_brazo.position.y = 100;
-
 
   brazo.add(ante_brazo);
   robot.add(brazo);
