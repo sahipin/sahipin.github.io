@@ -124,15 +124,45 @@ function rotate(event){
 	var x = event.clientX;
 	var y = event.clientY;
 	
+	var derecha = abajo = false;
+	var cam = null;
+	
+	//sacar el cuadrante de la selección
+	
+	if(x > window.innerWidth/2){
+		x-= window.innerWidth/2;
+		derecha = true;
+	}
+	
+	if(y > window.innerHeight/2){
+		y-= window.innerHeight/2;
+		abajo = true;
+	}
+	
+	
+	if(derecha){
+		if(abajo)
+			cam = camera;
+		else
+			cam = perfil 
+	}
+	else { 
+		if (abajo)
+			cam = planta
+		else
+			cam = alzado
+		
+	}
+		
 	// convertir al cuadrado canónico (2x2) centrado en el origen de coordenadas
-	x = (x/window.innerWidth) * 2 - 1;
-	y = -(y/window.innerHeight) * 2 + 1;
+	x = (2*x/window.innerWidth) * 2 - 1;
+	y = -(2*y/window.innerHeight) * 2 + 1;
 	
 	// construir el rayo e interseccion con la escena
 	var rayo = new THREE.Raycaster();
-	rayo.setFromCamera(new THREE.Vector2(x,y), camera);
+	rayo.setFromCamera(new THREE.Vector2(x,y), cam);
 	var interseccion = rayo.intersectObjects(scene.children, true);//true para que lo haga recursivamentre sobre los hijos de los hijos de la escena
-	if(interseccion.lenght > 0){
+	if(interseccion.length > 0){
 		interseccion[0].object.rotation.y += Math.PI /45;
 	}
 console.log("sas");
