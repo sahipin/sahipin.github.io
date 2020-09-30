@@ -12,13 +12,47 @@ var renderer, scene, camera;
 var esferacubo, cubo, angulo = 0;
 var r = t = 4;
 var l = b = -r;
-var cameraController
+var cameraController;
+var alzado, planta, perfil;
 
 // Acciones
 init();
 loadScene();
 render();
 
+function setCameras(ar ){
+	//contruir las 4 cámaras
+	
+	var origen = new THREE.Vector3(0,0,0);
+	//ortográficas
+	var camOrtografica;
+	if(ar>1){
+	  camOrtografica = new THREE.OrthographicCamera(l*ar, r*ar, t, b, -20, 20); 
+	}
+	else{
+	  camOrtografica = new THREE.OrthographicCamera(l, r, t/ar, b/ar, -20, 20); 
+	}
+	alzado = camOrtografica.clone();
+	alzado.position.set(0,0,4);
+	alzado.lookAt(origen);
+	perfil = camOrtografica.clone();
+	perfil.position.set(4,0,0);
+	perfil.lookAt(origen);
+	planta = camOrtografica.clone();
+	planta.position.set(0,4,0);
+	planta.lookAt(origen);
+	planta.up = new THREE.Vector3(0,0,-1);
+	
+	//perspectiva
+	camera = new THREE.PerspectiveCamera( 50, ar, 0.1, 100 ); // valores de cerca y lejos (los dos ultimos)
+    // Movemos la camare respecto al sistema de referencia de la scena
+    camera.position.set(0.5, 3, 9); // traslado de la camara desde el origen de coordenadas
+    camera.lookAt(new THREE.Vector3(0,0,0));
+    scene.add(alzado);
+	scene.add(perfil);
+	scene.add(planta);
+	scene.add(camera);
+}
 
 function init() {
   // Crear el motor, la escena y la camara
@@ -27,6 +61,7 @@ function init() {
   renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setClearColor( new THREE.Color(0x0000AA) );
+  renderer.autoClear = false;
   document.getElementById("container").appendChild(renderer.domElement);
 
   // Escena
@@ -35,18 +70,9 @@ function init() {
   // Crear la camara
   // Relacion aspecto
   var ar =  window.innerWidth / window.innerHeight;
-  //camera = new THREE.PerspectiveCamera( 75, ar, 0.1, 100 ); // valores de cerca y lejos (los dos ultimos)
-  if(ar>1){
-	  camera = new THREE.OrthographicCamera(l*ar, r*ar, t, b, -20, 20); 
-  }
-  else{
-	  camera = new THREE.OrthographicCamera(l, r, t/ar, b/ar, -20, 20); 
-  }
-  // añadimos camara en el eje de coordenas mirando hacia -z
-  scene.add(camera);
-  // Movemos la camare respecto al sistema de referencia de la scena
-  camera.position.set(0.5, 3, 9); // traslado de la camara desde el origen de coordenadas
-  camera.lookAt(new THREE.Vector3(0,0,0));
+  
+  setCameras(ar );
+  
   
   //controlador de camara
   cameraController = new THREE.OrbitControls( camera, renderer.domElement);
@@ -54,7 +80,7 @@ function init() {
   cameraController.noKeys = true;
   
   window.addEventListener('resize', updateAspectRatio);
-  renderer.domElement.addEventListener('dblClick', rotate);
+  renderer.domElement.addEventListener('dblclick', rotate);
 }
 
 function loadScene() {
@@ -104,12 +130,12 @@ function rotate(event){
 	
 	// construir el rayo e interseccion con la escena
 	var rayo = new THREE.Raycaster();
-	rayo.setFromCamera(new THREE.vector2(x,y), camera);
+	rayo.setFromCamera(new THREE.Vector2(x,y), camera);
 	var interseccion = rayo.intersectObjects(scene.children, true);//true para que lo haga recursivamentre sobre los hijos de los hijos de la escena
 	if(interseccion.lenght > 0){
 		interseccion[0].object.rotation.y += Math.PI /45;
 	}
-
+console.log("sas");
 }
 
 
@@ -120,20 +146,32 @@ function updateAspectRatio(){
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	var ar = window.innerWidth/window.innerHeight;
 	if(ar>1){
+	  alzado.left = perfil.left = planta.left = l*ar;
 	  camera.left = l*ar;
+	  alzado.right = perfil.right = planta.right = r*ar;
 	  camera.right = r*ar;
+	  alzado.bottom = perfil.bottom = planta.bottom = b;
 	  camera.bottom = b;
+	  alzado.top = perfil.top = planta.top = t;
 	  camera.top = t;
 	}
 	else{
+	  alzado.left = perfil.left = planta.left = l;
 	  camera.left = l;
+	  alzado.right = perfil.right = planta.right = r;
 	  camera.right = r;
+	  alzado.bottom = perfil.bottom = planta.bottom = b/ar;
 	  camera.bottom = b/ar;
+	  alzado.bottom = perfil.bottom = planta.bottom = t/ar;
 	  camera.top = t/ar;
 	}
+	camera.aspect = ar;
 	//se ha variado el valumen de la vista
 	//se ha variado la matriz de proyeccion
 	camera.updateProjectionMatrix();
+	alzado.updateProjectionMatrix();
+	perfil.updateProjectionMatrix();
+	planta.updateProjectionMatrix();
 }
 
 function update(){
@@ -152,6 +190,34 @@ function render(){
   requestAnimationFrame(render);
 
   update();
+  
+  renderer.clear();
+  
+  renderer.setViewport(0, window.innerHeight/2, 
+						 window.innerWidth/2, window.innerHeight/2);
+  renderer.render( scene, planta );
 
+
+  renderer.setViewport(window.innerWidth/2, 0, 
+						 window.innerWidth/2, window.innerHeight/2);
+  renderer.render( scene, perfil );
+
+
+  renderer.setViewport(0, 0, 
+						 window.innerWidth/2, window.innerHeight/2);
+  renderer.render( scene, alzado );
+  
+  
+  renderer.setViewport(window.innerWidth/2, window.innerHeight/2, 
+						 window.innerWidth/2, window.innerHeight/2);
   renderer.render( scene, camera );
 }
+
+
+
+
+
+
+
+
+
