@@ -114,6 +114,10 @@ function loadScene() {
   esferacubo.add(cubo);
   esferacubo.add(esfera);
   
+  var planeGeom = new THREE.PlaneGeometry();
+  
+  var plane = new THREE.Mesh(planeGeom, material);
+  scene.add(plane);
   scene.add(esferacubo);
   cubo.add( new THREE.AxisHelper(3) );
   scene.add( new THREE.AxisHelper(3) );

@@ -10,7 +10,7 @@ var renderer, scene, camera;
 
 // Variables globales
 var robot, angulo = 0, material;
-var r = t = 4;
+var r = t = 40;
 var l = b = -r;
 var cameraController;
 var cenital;
@@ -93,6 +93,11 @@ function loadScene() {
   base.position.y = -60;
   robot.add(base);
 
+  var planeGeom = new THREE.PlaneGeometry(100,100,1000,10);
+  
+  var plane = new THREE.Mesh(planeGeom, material);
+  scene.add(plane);
+  
   scene.add(robot);
   scene.add( new THREE.AxisHelper(30) );
 }
