@@ -37,7 +37,7 @@ function init() {
   // añadimos camara en el eje de coordenas mirando hacia -z
   scene.add(camera);
   // Movemos la camare respecto al sistema de referencia de la scena ( la z tiene que ser menor que la profundidad de campo, o corta la escena)
-  camera.position.set(0.5, 20, 380);
+  camera.position.set(300, 300, 380);
   camera.lookAt(new THREE.Vector3(0,0,0));
 
 
@@ -59,8 +59,15 @@ function loadScene() {
   var base = new THREE.Mesh(cilindro_base, material);
   base.position.y = -60;
   robot.add(base);
+  var planeGeom = new THREE.PlaneGeometry(1000,1000, 20,20);
+
+  var plane = new THREE.Mesh(planeGeom, material);
+	plane.rotation.x = Math.PI / 2;
+  scene.add(plane);
 
   scene.add(robot);
+	robot.position.y = 60
+
   scene.add( new THREE.AxisHelper(30) );
 }
 

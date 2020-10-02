@@ -24,15 +24,15 @@ render();
 
 function setCameras(ar ){
 	//contruir las 4 cámaras
-	
+
 	var origen = new THREE.Vector3(0,0,0);
 	//ortográfica
 	var camOrtografica;
 	if(ar>1){
-	  camOrtografica = new THREE.OrthographicCamera(l*ar, r*ar, t, b, -200, 200); 
+	  camOrtografica = new THREE.OrthographicCamera(l*ar, r*ar, t, b, -200, 200);
 	}
 	else{
-	  camOrtografica = new THREE.OrthographicCamera(l, r, t/ar, b/ar, -200, 200); 
+	  camOrtografica = new THREE.OrthographicCamera(l, r, t/ar, b/ar, -200, 200);
 	}
 	cenital = camOrtografica.clone();
 	cenital.position.set(0,250,0);
@@ -62,8 +62,8 @@ function init() {
 
   // Relacion aspecto
   var ar =  window.innerWidth / window.innerHeight;
-  
-  
+
+
   // Crear la camaras
   setCameras(ar);
 
@@ -71,7 +71,7 @@ function init() {
   cameraController = new THREE.OrbitControls( camera, renderer.domElement);
   cameraController.target.set(0,0,0);
   cameraController.noKeys = true;
-  
+
 
   window.addEventListener('resize', updateAspectRatio);
 }
@@ -93,12 +93,14 @@ function loadScene() {
   base.position.y = -60;
   robot.add(base);
 
-  var planeGeom = new THREE.PlaneGeometry(100,100,1000,10);
-  
+  var planeGeom = new THREE.PlaneGeometry(1000,1000, 20,20);
+
   var plane = new THREE.Mesh(planeGeom, material);
+	plane.rotation.x = Math.PI / 2;
   scene.add(plane);
-  
+
   scene.add(robot);
+	robot.position.y = 60
   scene.add( new THREE.AxisHelper(30) );
 }
 
@@ -106,7 +108,7 @@ function update(){
   // Cambios entre frames
   //angulo += Math.PI / 1000;
   //robot.rotation.y = angulo;
-  
+
 }
 
 function render(){
@@ -119,11 +121,11 @@ function render(){
   update();
 
   renderer.clear();
-  
+
   renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
   renderer.render( scene, camera );
-  
-  
+
+
   var size = Math.min(window.innerWidth, window.innerHeight)/4;
   renderer.setViewport(0, 0, size, size);
   renderer.render( scene, cenital );
