@@ -27,13 +27,7 @@ function setCameras(ar ){
 
 	var origen = new THREE.Vector3(0,0,0);
 	//ortográfica
-	var camOrtografica;
-	if(ar>1){
-	  camOrtografica = new THREE.OrthographicCamera(l*ar, r*ar, t, b, -200, 200);
-	}
-	else{
-	  camOrtografica = new THREE.OrthographicCamera(l, r, t/ar, b/ar, -200, 200);
-	}
+	var camOrtografica = new THREE.OrthographicCamera(l, r, t, b, -200, 200);
 	cenital = camOrtografica.clone();
 	cenital.position.set(0,250,0);
 	cenital.lookAt(origen);
@@ -78,7 +72,6 @@ function init() {
 
 function loadScene() {
   // Cargar la escena con objetos
-
 
   // Materiales
   material = new THREE.MeshBasicMaterial({ color: 'pink', wireframe: true });
@@ -136,31 +129,36 @@ function updateAspectRatio(){
 	//indicarle al motor las nuevas dimensiones
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	var ar = window.innerWidth/window.innerHeight;
+
+	var size = Math.min(window.innerWidth, window.innerHeight)/4;
+
 	if(ar>1){
-	  cenital.left = l*ar;
+	  //cenital.left = l*ar;
 	  camera.left = l*ar;
-	  cenital.right = r*ar;
+	  //cenital.right = r*ar;
 	  camera.right = r*ar;
-	  cenital.bottom = b;
+	  //cenital.bottom = b;
 	  camera.bottom = b;
-	  cenital.top = t;
+	  //cenital.top = t;
 	  camera.top = t;
 	}
 	else{
-	  cenital.left = l;
+	  //cenital.left = l;
 	  camera.left = l;
-	  cenital.right = r;
+	  //cenital.right = r;
 	  camera.right = r;
-	  cenital.bottom = b/ar;
+	  //cenital.bottom = b/ar;
 	  camera.bottom = b/ar;
-	  cenital.bottom = t/ar;
+	  //cenital.bottom = t/ar;
 	  camera.top = t/ar;
 	}
+
 	camera.aspect = ar;
 	//se ha variado el valumen de la vista
 	//se ha variado la matriz de proyeccion
 	camera.updateProjectionMatrix();
-	cenital.updateProjectionMatrix();
+	//cenital.updateProjectionMatrix();
+	render();
 }
 
 
@@ -257,7 +255,8 @@ function loadBrazoRobot(){
   palma_der.position.x = -10;
   palma_der.position.z = 2;
   var dedos_der = new THREE.Mesh(tetraedro_dedos, material);
-
+  dedos_der.position.x = -0.5;
+	dedos.position.x = -0.5;
   var pinza_der = new THREE.Object3D();
   var pinza_izq = new THREE.Object3D();
   pinza_der.add(dedos);
