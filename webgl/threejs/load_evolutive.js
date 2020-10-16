@@ -96,7 +96,7 @@ function generaCiudad(contenido) {
 
   var city = new THREE.Object3D();
 
-  for (var i=0 ; i < 37; i++){
+  for (var i=0 ; i < lines.length; i++){
     console.log(lines[i]);
     var tokens = lines[i].split(' ');
     console.log(tokens[0]*1+tokens[3]/2);
