@@ -124,6 +124,7 @@ function loadScene() {
 
 	var back = new THREE.PlaneGeometry(500,500,10,10);
   var fondo;
+	const loader = new THREE.TextureLoader();
 	loader.load('images/edificios/morning.jpg' , function(texture)
 				{
 				 fondo = new THREE.MeshBasicMaterial({ map:texture });
@@ -133,7 +134,7 @@ function loadScene() {
   backZ = new THREE.Mesh(back, fondo);
   backX.rotation.y = Math.PI / 2;
   backX.position.y = 250;
-  backX.position.y = 250;
+  backZ.position.y = 250;
   scene.add(backX);
 	scene.add(backZ);
 
@@ -276,7 +277,7 @@ function setupGui() {
 
 	// Construccion del menu
 	var h = gui.addFolder("Control robot");
-	var hour = h.add(effectController, "time", 0, 3, 1).name("Hora");
+	var hour = h.add(effectController, "time", 0, 2, 1).name("Hora");
 	var separationDist = h.add(effectController, "separation", 0, 5, 1).name("Separación edificios");
 	hour.onChange(function(time){
 		const loader = new THREE.TextureLoader();
