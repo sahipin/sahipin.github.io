@@ -74,11 +74,11 @@ function init() {
   window.addEventListener('resize', updateAspectRatio);
 
 	const loader = new THREE.TextureLoader();
-	loader.load('images/edificios/puente.jpg' , function(texture)
+	/*loader.load('images/edificios/puente.jpg' , function(texture)
 	            {
 	             scene.background = texture;
 	            });
-
+	*/
 	loader.load('images/edificios/escuela.jpg' , function(texture)
 		{
 		 materialE = new THREE.MeshBasicMaterial({ map:texture , repeat : THREE.Vector2(1,4)});
@@ -272,15 +272,17 @@ function setupGui() {
 	effectController = {
 		time: 0,
 		separation: 0,
+		height: 10,
 	};
 
 	// Creacion interfaz
 	var gui = new dat.GUI();
 
 	// Construccion del menu
-	var h = gui.addFolder("Control robot");
+	var h = gui.addFolder("Control ciudad");
 	var hour = h.add(effectController, "time", 0, 2, 1).name("Hora");
 	var separationDist = h.add(effectController, "separation", 0, 5, 1).name("Separación edificios");
+	var heightConf = h.add(effectController, "height", 10, 100, 5).name("Altura edificios");
 	hour.onChange(function(time){
 		const loader = new THREE.TextureLoader();
 		if (time == 0){
@@ -289,15 +291,7 @@ function setupGui() {
 			loader.load('images/edificios/morning.jpg' , function(texture)
 						{
 							fondo = new THREE.MeshBasicMaterial({ map:texture });
-							backX = new THREE.Mesh(back, fondo);
-				 			backZ = new THREE.Mesh(back, fondo);
-				 			backX.rotation.y = Math.PI / 2;
-				 			backX.position.y = 250;
-				 			backZ.position.y = 250;
-				 			backZ.position.x = 250;
-				 			backX.position.z = 250;
-				 			scene.add(backX);
-				 			scene.add(backZ);
+							set_city_backGround(fondo);
 						});
 
 
@@ -308,15 +302,7 @@ function setupGui() {
 			loader.load('images/edificios/day.jpg' , function(texture)
 						{
 							fondo = new THREE.MeshBasicMaterial({ map:texture });
- 						 backX = new THREE.Mesh(back, fondo);
- 						 backZ = new THREE.Mesh(back, fondo);
- 						 backX.rotation.y = Math.PI / 2;
- 						 backX.position.y = 250;
- 						 backZ.position.y = 250;
- 						 backZ.position.x = 250;
- 						 backX.position.z = 250;
- 						 scene.add(backX);
- 						 scene.add(backZ);
+ 						  set_city_backGround(fondo);
 						});
 		}
 		else{
@@ -325,15 +311,7 @@ function setupGui() {
 			loader.load('images/edificios/night.jpg' , function(texture)
 						{
 							fondo = new THREE.MeshBasicMaterial({ map:texture });
- 						 backX = new THREE.Mesh(back, fondo);
- 						 backZ = new THREE.Mesh(back, fondo);
- 						 backX.rotation.y = Math.PI / 2;
- 						 backX.position.y = 250;
- 						 backZ.position.y = 250;
- 						 backZ.position.x = 250;
- 						 backX.position.z = 250;
- 						 scene.add(backX);
- 						 scene.add(backZ);
+							set_city_backGround(fondo);
 						});
 
 		}
@@ -341,4 +319,19 @@ function setupGui() {
 	separationDist.onChange(function(distance){
 
 	});
+	heightConf.onChange(function(height){
+
+	});
+}
+
+function set_city_backGround(fondo){
+	backX = new THREE.Mesh(back, fondo);
+	backZ = new THREE.Mesh(back, fondo);
+	backX.rotation.y = Math.PI / 2;
+	backX.position.y = 250;
+	backZ.position.y = 250;
+	backZ.position.x = 250;
+	backX.position.z = 250;
+	scene.add(backX);
+	scene.add(backZ);
 }
