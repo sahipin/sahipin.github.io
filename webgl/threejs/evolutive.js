@@ -7,7 +7,7 @@
 // Variables globales imprescindibles
 // motor render (dibujar), estructura datos almacen dibujos, desde donde dibujamos
 var renderer, scene, camera;
-
+var materialE;
 // Variables globales
 var city, angulo = 0, material;
 var r = t = 40;
@@ -70,15 +70,15 @@ function init() {
   window.addEventListener('resize', updateAspectRatio);
 
 	const loader = new THREE.TextureLoader();
-	/*loader.load('https://images.pexels.com/photos/1205301/pexels-photo-1205301.jpeg' , function(texture)
+	loader.load('https://images.pexels.com/photos/1205301/pexels-photo-1205301.jpeg' , function(texture)
 	            {
 	             scene.background = texture;
 	            });
-*/
 	loader.load('images/edificios/escuela.jpg' , function(texture)
-	            {
-	             scene.background = texture;
-	            });
+							{
+							 materialE = new THREE.MeshBasicMaterial({ map:texture });
+							});
+
 }
 
 function loadScene() {
@@ -127,7 +127,9 @@ function generaCiudad(contenido) {
 
     /* OBJETOS */
     if(tokens[2] == "E"){
-      material = new THREE.MeshBasicMaterial({ color: 'blue', solid: true });
+			material = materialE
+
+
     }
     else if(tokens[2] == "G"){
       material = new THREE.MeshBasicMaterial({ color: 'green', solid: true });
