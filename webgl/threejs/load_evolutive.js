@@ -40,6 +40,11 @@ function init() {
   camera.position.set(0.5, 80, 200);
   camera.lookAt(new THREE.Vector3(0,0,0));
 
+  const loader = new THREE.TextureLoader();
+  loader.load('https://images.pexels.com/photos/1205301/pexels-photo-1205301.jpeg' , function(texture)
+              {
+               scene.background = texture;
+              });
 
 }
 
