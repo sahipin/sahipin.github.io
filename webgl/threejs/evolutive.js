@@ -12,7 +12,7 @@ var materialE,materialG,materialF,materialR,materialS,materialH,material_default
 var city, angulo = 0, material;
 var r = t = 40;
 var l = b = -r;
-var max_height = 20;
+var max_height = 20, separation_dist = 1;
 var cameraController;
 var cenital;
 // Global GUI
@@ -34,7 +34,7 @@ function setCameras(ar ){
 	//ortográfica
 	var camOrtografica = new THREE.OrthographicCamera(l, r, t, b, -200, 200);
 	cenital = camOrtografica.clone();
-	cenital.position.set(0,250,0);
+	cenital.position.set(0,130,0);
 	cenital.lookAt(origen);
 	cenital.up = new THREE.Vector3(0,0,-1);
 	//perspectiva
@@ -118,7 +118,7 @@ function loadScene() {
   material = new THREE.MeshBasicMaterial({ color: 'pink', solid: true });
 
 	city = new THREE.Object3D();
-
+  city.name = "city";
 	document.getElementById('file-input').addEventListener('change', leerArchivo, false);
 
   scene.add( new THREE.AxisHelper(30) );
@@ -155,12 +155,17 @@ function leerArchivo(e) {
 
 function generaCiudad() {
 
+	var selectedObject = scene.getObjectByName(city.name);
+  scene.remove( selectedObject );
+	city = new THREE.Object3D();
+	city.name = "city";
+
+  if(!contenido)
+		return;
   var lines = contenido.split('\n');
 
   for (var i=0 ; i < lines.length; i++){
-    console.log(lines[i]);
     var tokens = lines[i].split(' ');
-    console.log(tokens[0]*1+tokens[3]/2);
     // Geometrias
     var height = Math.random() * (max_height - 5) + 5;
     var cube_building = new THREE.BoxGeometry(tokens[3]*1, height, tokens[4]*1);
@@ -189,8 +194,8 @@ function generaCiudad() {
       material = material_default
     }
     var building = new THREE.Mesh(cube_building, material);
-    building.position.x = tokens[0]*1+tokens[3]/2+0.5;
-    building.position.z = tokens[1]*1+tokens[4]/2+0.5;
+    building.position.x = separation_dist * tokens[0]*1+tokens[3]/2+0.5;
+    building.position.z = separation_dist * tokens[1]*1+tokens[4]/2+0.5;
     building.position.y = height/2;
 
     city.add(building);
@@ -260,8 +265,8 @@ function setupGui() {
 	// Definicion de los controles
 	effectController = {
 		time: 0,
-		separation: 0,
-		height: 10,
+		separation: 1,
+		height: 20,
 	};
 
 	// Creacion interfaz
@@ -270,7 +275,7 @@ function setupGui() {
 	// Construccion del menu
 	var h = gui.addFolder("Control ciudad");
 	var hour = h.add(effectController, "time", 0, 2, 1).name("Hora");
-	var separationDist = h.add(effectController, "separation", 0, 5, 1).name("Separación edificios");
+	var separationDist = h.add(effectController, "separation", 1, 5, 1).name("Separación edificios");
 	var heightConf = h.add(effectController, "height", 20, 100, 5).name("Altura edificios");
 	hour.onChange(function(time){
 		const loader = new THREE.TextureLoader();
@@ -303,11 +308,12 @@ function setupGui() {
 		}
 	});
 	separationDist.onChange(function(distance){
-
+		separation_dist = distance;
+		generaCiudad();
 	});
 	heightConf.onChange(function(height){
 		max_height = height;
-		generaCiudad();		
+		generaCiudad();
 	});
 }
 
