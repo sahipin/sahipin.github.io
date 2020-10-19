@@ -122,23 +122,13 @@ function loadScene() {
 
   scene.add( new THREE.AxisHelper(30) );
 
-	var back = new THREE.PlaneGeometry(384,185,10,10);
-  var fondo;
 	const loader = new THREE.TextureLoader();
 	loader.load('images/edificios/morning.jpg' , function(texture)
 				{
-				 fondo = new THREE.MeshBasicMaterial({ map:texture });
+				 var fondo = new THREE.MeshBasicMaterial({ map:texture });
+				 set_city_backGround(fondo);
 				});
 
-	backX = new THREE.Mesh(back, fondo);
-  backZ = new THREE.Mesh(back, fondo);
-  backX.rotation.y = Math.PI / 2;
-  backX.position.y = 90;
-  backZ.position.y = 90;
-  backZ.position.x = 192;
-  backX.position.z = 192;
-  scene.add(backX);
-	scene.add(backZ);
 
 }
 
@@ -322,14 +312,14 @@ function setupGui() {
 }
 
 function set_city_backGround(fondo){
-	var back = new THREE.PlaneGeometry(500,500,10,10);
+	var back = new THREE.PlaneGeometry(384,185,10,10);
 	backX = new THREE.Mesh(back, fondo);
-	backZ = new THREE.Mesh(back, fondo);
-	backX.rotation.y = Math.PI / 2;
-	backX.position.y = 250;
-	backZ.position.y = 250;
-	backZ.position.x = 250;
-	backX.position.z = 250;
-	scene.add(backX);
+  backZ = new THREE.Mesh(back, fondo);
+  backX.rotation.y = Math.PI / 2;
+  backX.position.y = 90;
+  backZ.position.y = 90;
+  backZ.position.x = 192;
+  backX.position.z = 192;
+  scene.add(backX);
 	scene.add(backZ);
 }
