@@ -288,54 +288,54 @@ function setupGui() {
 			var fondo;
 			loader.load('images/edificios/morning.jpg' , function(texture)
 						{
-						 fondo = new THREE.MeshBasicMaterial({ map:texture });
+							fondo = new THREE.MeshBasicMaterial({ map:texture });
+							backX = new THREE.Mesh(back, fondo);
+				 			backZ = new THREE.Mesh(back, fondo);
+				 			backX.rotation.y = Math.PI / 2;
+				 			backX.position.y = 250;
+				 			backZ.position.y = 250;
+				 			backZ.position.x = 250;
+				 			backX.position.z = 250;
+				 			scene.add(backX);
+				 			scene.add(backZ);
 						});
 
-			backX = new THREE.Mesh(back, fondo);
-			backZ = new THREE.Mesh(back, fondo);
-			backX.rotation.y = Math.PI / 2;
-			backX.position.y = 250;
-			backZ.position.y = 250;
-			backZ.position.x = 250;
-			backX.position.z = 250;
-			scene.add(backX);
-			scene.add(backZ);
+
 		}
 	  else if (time == 1){
 			var back = new THREE.PlaneGeometry(500,500,10,10);
 			var fondo;
 			loader.load('images/edificios/day.jpg' , function(texture)
 						{
-						 fondo = new THREE.MeshBasicMaterial({ map:texture });
+							fondo = new THREE.MeshBasicMaterial({ map:texture });
+ 						 backX = new THREE.Mesh(back, fondo);
+ 						 backZ = new THREE.Mesh(back, fondo);
+ 						 backX.rotation.y = Math.PI / 2;
+ 						 backX.position.y = 250;
+ 						 backZ.position.y = 250;
+ 						 backZ.position.x = 250;
+ 						 backX.position.z = 250;
+ 						 scene.add(backX);
+ 						 scene.add(backZ);
 						});
-
-			backX = new THREE.Mesh(back, fondo);
-			backZ = new THREE.Mesh(back, fondo);
-			backX.rotation.y = Math.PI / 2;
-			backX.position.y = 250;
-			backZ.position.y = 250;
-			backZ.position.x = 250;
-			backX.position.z = 250;
-			scene.add(backX);
-			scene.add(backZ);
 		}
 		else{
 			var back = new THREE.PlaneGeometry(500,500,10,10);
 			var fondo;
 			loader.load('images/edificios/night.jpg' , function(texture)
 						{
-						 fondo = new THREE.MeshBasicMaterial({ map:texture });
+							fondo = new THREE.MeshBasicMaterial({ map:texture });
+ 						 backX = new THREE.Mesh(back, fondo);
+ 						 backZ = new THREE.Mesh(back, fondo);
+ 						 backX.rotation.y = Math.PI / 2;
+ 						 backX.position.y = 250;
+ 						 backZ.position.y = 250;
+ 						 backZ.position.x = 250;
+ 						 backX.position.z = 250;
+ 						 scene.add(backX);
+ 						 scene.add(backZ);
 						});
 
-			backX = new THREE.Mesh(back, fondo);
-			backZ = new THREE.Mesh(back, fondo);
-			backX.rotation.y = Math.PI / 2;
-			backX.position.y = 250;
-			backZ.position.y = 250;
-			backZ.position.x = 250;
-			backX.position.z = 250;
-			scene.add(backX);
-			scene.add(backZ);
 		}
 	});
 	separationDist.onChange(function(distance){
