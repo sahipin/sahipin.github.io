@@ -7,7 +7,7 @@
 // Variables globales imprescindibles
 // motor render (dibujar), estructura datos almacen dibujos, desde donde dibujamos
 var renderer, scene, camera;
-var materialE;
+var materialE,materialG,materialF,materialR,materialS,materialH,material_default;
 // Variables globales
 var city, angulo = 0, material;
 var r = t = 40;
@@ -74,10 +74,35 @@ function init() {
 	            {
 	             scene.background = texture;
 	            });
+
 	loader.load('images/edificios/escuela.jpg' , function(texture)
-							{
-							 materialE = new THREE.MeshBasicMaterial({ map:texture });
-							});
+		{
+		 materialE = new THREE.MeshBasicMaterial({ map:texture });
+		});
+	loader.load('images/edificios/farmacia.jpg' , function(texture)
+		{
+		materialF = new THREE.MeshBasicMaterial({ map:texture });
+		});
+	loader.load('images/edificios/hospital.jpg' , function(texture)
+		{
+		materialH = new THREE.MeshBasicMaterial({ map:texture });
+		});
+	loader.load('images/edificios/residencia.jpg' , function(texture)
+		{
+		materialR = new THREE.MeshBasicMaterial({ map:texture });
+		});
+	loader.load('images/edificios/supermercado.jpg' , function(texture)
+		{
+		materialS = new THREE.MeshBasicMaterial({ map:texture });
+		});
+	loader.load('images/edificios/gimnasio.jpg' , function(texture)
+		{
+		materialG = new THREE.MeshBasicMaterial({ map:texture });
+		});
+	loader.load('images/edificios/cefntro_comercial.jpg' , function(texture)
+		{
+		material_default = new THREE.MeshBasicMaterial({ map:texture });
+		});
 
 }
 
@@ -129,25 +154,24 @@ function generaCiudad(contenido) {
     if(tokens[2] == "E"){
 			material = materialE
 
-
     }
     else if(tokens[2] == "G"){
-      material = new THREE.MeshBasicMaterial({ color: 'green', solid: true });
+      material = materialG
     }
     else if(tokens[2] == "F"){
-      material = new THREE.MeshBasicMaterial({ color: 'pink', solid: true });
+      material = materialF
     }
     else if(tokens[2] == "R"){
-      material = new THREE.MeshBasicMaterial({ color: 'red', solid: true });
+      material = materialR
     }
     else if(tokens[2] == "S"){
-      material = new THREE.MeshBasicMaterial({ color: 'yellow', solid: true });
+      material = materialS
     }
     else if(tokens[2] == "H"){
-      material = new THREE.MeshBasicMaterial({ color: 'cyan', solid: true });
+      material = materialH
     }
     else {
-      material = new THREE.MeshBasicMaterial({ color: 'white', solid: true });
+      material = material_default
     }
     var building = new THREE.Mesh(cube_building, material);
     building.position.x = tokens[0]*1+tokens[3]/2+0.5;
