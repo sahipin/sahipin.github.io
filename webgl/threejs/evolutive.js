@@ -14,11 +14,14 @@ var r = t = 40;
 var l = b = -r;
 var cameraController;
 var cenital;
+// Global GUI
+var effectController;
 
 
 // Acciones
 init();
 loadScene();
+setupGui();
 render();
 
 
@@ -239,4 +242,30 @@ function updateAspectRatio(){
 	camera.updateProjectionMatrix();
 	//cenital.updateProjectionMatrix();
 	render();
+}
+
+function setupGui() {
+	// Definicion de los controles
+	effectController = {
+		time: 0,
+		separation: 0,
+	};
+
+	// Creacion interfaz
+	var gui = new dat.GUI();
+
+	// Construccion del menu
+	var h = gui.addFolder("Control robot");
+	var hour = h.add(effectController, "time", 0, 3, 1).name("Hora");
+	var separationDist = h.add(effectController, "separation", 0, 5, 1).name("Separación edificios");
+	hour.onChange(function(time){
+		const loader = new THREE.TextureLoader();
+		loader.load('images/edificios/escuela.jpg' , function(texture)
+		            {
+		             scene.background = texture;
+		            });
+	});
+	separationDist.onChange(function(distance){
+
+	});
 }
