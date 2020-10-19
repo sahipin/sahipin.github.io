@@ -12,12 +12,13 @@ var materialE,materialG,materialF,materialR,materialS,materialH,material_default
 var city, angulo = 0, material;
 var r = t = 40;
 var l = b = -r;
+var max_height = 20;
 var cameraController;
 var cenital;
 // Global GUI
 var effectController;
 var backX, backZ;
-
+var contenido;
 
 // Acciones
 init();
@@ -146,15 +147,13 @@ function leerArchivo(e) {
   }
   var lector = new FileReader();
   lector.onload = function(e) {
-    var contenido = e.target.result;
-    generaCiudad(contenido);
+    contenido = e.target.result;
+    generaCiudad();
   };
   lector.readAsText(archivo);
 }
 
-function generaCiudad(contenido) {
-
-
+function generaCiudad() {
 
   var lines = contenido.split('\n');
 
@@ -163,7 +162,7 @@ function generaCiudad(contenido) {
     var tokens = lines[i].split(' ');
     console.log(tokens[0]*1+tokens[3]/2);
     // Geometrias
-    var height = Math.floor(Math.random()* 10) + 1;
+    var height = Math.random() * (max_height - 5) + 5;
     var cube_building = new THREE.BoxGeometry(tokens[3]*1, height, tokens[4]*1);
 
     /* OBJETOS */
@@ -272,7 +271,7 @@ function setupGui() {
 	var h = gui.addFolder("Control ciudad");
 	var hour = h.add(effectController, "time", 0, 2, 1).name("Hora");
 	var separationDist = h.add(effectController, "separation", 0, 5, 1).name("Separación edificios");
-	var heightConf = h.add(effectController, "height", 10, 100, 5).name("Altura edificios");
+	var heightConf = h.add(effectController, "height", 20, 100, 5).name("Altura edificios");
 	hour.onChange(function(time){
 		const loader = new THREE.TextureLoader();
 		if (time == 0){
@@ -307,7 +306,8 @@ function setupGui() {
 
 	});
 	heightConf.onChange(function(height){
-
+		max_height = height;
+		generaCiudad();		
 	});
 }
 
@@ -316,8 +316,8 @@ function set_city_backGround(fondo){
 	backX = new THREE.Mesh(back, fondo);
   backZ = new THREE.Mesh(back, fondo);
   backX.rotation.y = Math.PI / 2;
-  backX.position.y = 90;
-  backZ.position.y = 90;
+  backX.position.y = 50;
+  backZ.position.y = 50;
   backZ.position.x = 192;
   backX.position.z = 192;
   scene.add(backX);
