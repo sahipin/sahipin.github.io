@@ -286,7 +286,6 @@ function setupGui() {
 	hour.onChange(function(time){
 		const loader = new THREE.TextureLoader();
 		if (time == 0){
-			var back = new THREE.PlaneGeometry(500,500,10,10);
 			var fondo;
 			loader.load('images/edificios/morning.jpg' , function(texture)
 						{
@@ -297,7 +296,6 @@ function setupGui() {
 
 		}
 	  else if (time == 1){
-			var back = new THREE.PlaneGeometry(500,500,10,10);
 			var fondo;
 			loader.load('images/edificios/day.jpg' , function(texture)
 						{
@@ -306,7 +304,6 @@ function setupGui() {
 						});
 		}
 		else{
-			var back = new THREE.PlaneGeometry(500,500,10,10);
 			var fondo;
 			loader.load('images/edificios/night.jpg' , function(texture)
 						{
@@ -325,6 +322,7 @@ function setupGui() {
 }
 
 function set_city_backGround(fondo){
+	var back = new THREE.PlaneGeometry(500,500,10,10);
 	backX = new THREE.Mesh(back, fondo);
 	backZ = new THREE.Mesh(back, fondo);
 	backX.rotation.y = Math.PI / 2;
