@@ -70,7 +70,7 @@ function init() {
   window.addEventListener('resize', updateAspectRatio);
 
 	const loader = new THREE.TextureLoader();
-	loader.load('https://images.pexels.com/photos/1205301/pexels-photo-1205301.jpeg' , function(texture)
+	loader.load('images/edificios/puente.jpg' , function(texture)
 	            {
 	             scene.background = texture;
 	            });
