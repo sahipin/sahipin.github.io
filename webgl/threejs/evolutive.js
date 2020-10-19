@@ -75,7 +75,7 @@ function init() {
 	             scene.background = texture;
 	            });
 */
-	loader.load('webgl/images/edificios/escuela.jpg' , function(texture)
+	loader.load('images/edificios/escuela.jpg' , function(texture)
 	            {
 	             scene.background = texture;
 	            });
