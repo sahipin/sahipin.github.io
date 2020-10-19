@@ -168,8 +168,7 @@ function generaCiudad() {
     var tokens = lines[i].split(' ');
     // Geometrias
     var height = Math.random() * (max_height - 5) + 5;
-		var extraWidth = 3;
-    var cube_building = new THREE.BoxGeometry(tokens[3]*extraWidth, height, tokens[4]*extraWidth);
+    var cube_building = new THREE.BoxGeometry(tokens[3]*1, height, tokens[4]*1);
 
     /* OBJETOS */
     if(tokens[2] == "E"){
@@ -195,8 +194,8 @@ function generaCiudad() {
       material = material_default
     }
     var building = new THREE.Mesh(cube_building, material);
-    building.position.x = separation_dist * tokens[0]*1+tokens[3]*extraWidth/2+0.5;
-    building.position.z = separation_dist * tokens[1]*1+tokens[4]*extraWidth/2+0.5;
+    building.position.x = separation_dist * tokens[0]*1+tokens[3]/2+0.5;
+    building.position.z = separation_dist * tokens[1]*1+tokens[4]/2+0.5;
     building.position.y = height/2;
 
     city.add(building);
