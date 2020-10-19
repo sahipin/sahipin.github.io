@@ -16,6 +16,7 @@ var cameraController;
 var cenital;
 // Global GUI
 var effectController;
+var backX, backZ;
 
 
 // Acciones
@@ -120,6 +121,22 @@ function loadScene() {
 	document.getElementById('file-input').addEventListener('change', leerArchivo, false);
 
   scene.add( new THREE.AxisHelper(30) );
+
+	var back = new THREE.PlaneGeometry(500,500,10,10);
+  var fondo;
+	loader.load('images/edificios/morning.jpg' , function(texture)
+				{
+				 fondo = new THREE.MeshBasicMaterial({ map:texture });
+				});
+
+	backX = new THREE.Mesh(back, fondo);
+  backZ = new THREE.Mesh(back, fondo);
+  backX.rotation.y = Math.PI / 2;
+  backX.position.y = 250;
+  backX.position.y = 250;
+  scene.add(backX);
+	scene.add(backZ);
+
 }
 
 function update(){
@@ -143,6 +160,9 @@ function leerArchivo(e) {
 }
 
 function generaCiudad(contenido) {
+
+
+
   var lines = contenido.split('\n');
 
   for (var i=0 ; i < lines.length; i++){
@@ -260,7 +280,18 @@ function setupGui() {
 	var separationDist = h.add(effectController, "separation", 0, 5, 1).name("Separación edificios");
 	hour.onChange(function(time){
 		const loader = new THREE.TextureLoader();
-		loader.load('images/edificios/escuela.jpg' , function(texture)
+		if (time == 0)
+			loader.load('images/edificios/morning.jpg' , function(texture)
+		            {
+		             scene.background = texture;
+		            });
+	  else if (time == 1)
+			loader.load('images/edificios/day.jpg' , function(texture)
+		            {
+		             scene.background = texture;
+		            });
+		else
+			loader.load('images/edificios/night.jpg' , function(texture)
 		            {
 		             scene.background = texture;
 		            });
