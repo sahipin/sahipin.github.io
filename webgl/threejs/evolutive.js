@@ -99,7 +99,7 @@ function init() {
 		{
 		materialG = new THREE.MeshBasicMaterial({ map:texture });
 		});
-	loader.load('images/edificios/cefntro_comercial.jpg' , function(texture)
+	loader.load('images/edificios/centro_comercial.jpg' , function(texture)
 		{
 		material_default = new THREE.MeshBasicMaterial({ map:texture });
 		});
