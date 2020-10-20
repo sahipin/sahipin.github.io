@@ -138,6 +138,11 @@ function loadScene() {
 					asfalto.rotation.x = -Math.PI / 2;
 					asfalto.position.x = 192;
 					asfalto.position.z = 192;
+
+					texture.wrapS = THREE.RepeatWrapping;
+					texture.wrapT = THREE.RepeatWrapping;
+					texture.repeat.set( 80, 80 );
+
 	 				scene.add(asfalto);
 				});
 
