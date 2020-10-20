@@ -21,6 +21,7 @@ var effectController;
 var backX, backZ;
 var contenido;
 var notified = 0;
+var loading_city = 0;
 // Acciones
 init();
 loadScene();
@@ -170,7 +171,10 @@ function leerArchivo(e) {
 }
 
 function generaCiudad() {
-
+  if (loading_city == 1){
+		return;
+	}
+	loading_city = 1;
 	var selectedObject = scene.getObjectByName(city.name);
   scene.remove( selectedObject );
 	city = new THREE.Object3D();
@@ -231,6 +235,7 @@ function generaCiudad() {
   }
 
 	scene.add(city);
+	loading_city = 0;
 }
 
 function render(){
