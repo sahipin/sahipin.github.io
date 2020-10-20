@@ -21,18 +21,10 @@ var backX, backZ;
 var contenido;
 var notified = 0;
 var loading_city = 0;
-var world, physicsMaterial;
-var sphereBody;
-var pressed = {};
-var clock = new THREE.Clock();
-var sphereData, sphere, sphereGroup;
 // Acciones
 init();
 loadScene();
 setupGui();
-getPhysics();
-getPhysicsMaterial();
-addListeners();
 render();
 
 
@@ -59,8 +51,8 @@ function setCameras(ar ){
 function setPersonalCamera (){
 
 	  var ar =  window.innerWidth / window.innerHeight;
-		personalCamera = new THREE.PerspectiveCamera(75, ar, 0.1, 100);
-		personalCamera.position.set(0, 20, -50);
+		personalCamera = new THREE.PerspectiveCamera(75, ar, 0.1, 10000);
+		personalCamera.position.set(0, 200, -500);
 		personalCamera.lookAt(scene.position);
 		scene.add(personalCamera);
 }
@@ -72,7 +64,7 @@ function init() {
   // Motor de render
   renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor( new THREE.Color(0xffffff) );
+  renderer.setClearColor( new THREE.Color(0x777777) );
   document.getElementById("container").appendChild(renderer.domElement);
   renderer.autoClear = false;
   // Escena
@@ -153,23 +145,12 @@ function loadScene() {
 				{
 				 var fondo = new THREE.MeshBasicMaterial({ map:texture });
 				 var suelo = new THREE.PlaneGeometry(384,384,10,10);
-	 				asfalto = new THREE.Mesh(suelo, material);
+	 				asfalto = new THREE.Mesh(suelo, fondo);
 					asfalto.rotation.x = -Math.PI / 2;
 					asfalto.position.x = 192;
 					asfalto.position.z = 192;
 
 	 				scene.add(asfalto);
-
-					var q = asfalto.quaternion;
-			    var floorBody = new CANNON.Body({
-			      mass: 0, // mass = 0 makes the body static
-			      material: physicsMaterial,
-			      shape: new CANNON.Plane(),
-			      quaternion: new CANNON.Quaternion(-q._x, q._y, q._z, q._w)
-			    });
-			    world.addBody(floorBody);
-
-
 				});
 
 		tex.wrapS = THREE.RepeatWrapping;
@@ -203,11 +184,7 @@ function generaCiudad() {
 		return;
 	}
 	if(!personalCamera){
-		setPersonalCamera ();
-		sphereData = getSphere(scene);
-		sphere = sphereData[0];
-		sphereGroup = sphereData[1];
-		addSpherePhysics();
+		//setPersonalCamera ();
 	}
 	console.log("generating");
 	loading_city = 1;
@@ -266,17 +243,8 @@ function generaCiudad() {
     building.position.x = separation_dist * tokens[0]*1+tokens[3]/2+0.5;
     building.position.z = separation_dist * tokens[1]*1+tokens[4]/2+0.5;
     building.position.y = height/2;
+
     city.add(building);
-
-		var q = building.quaternion;
-		var buildingBody = new CANNON.Body({
-			mass: 0, // mass = 0 makes the body static
-			material: physicsMaterial,
-			shape: new CANNON.Box(new CANNON.Vec3(tokens[3]*1, height, tokens[4]*1)),
-			quaternion: new CANNON.Quaternion(-q._x, q._y, q._z, q._w)
-		});
-	  world.addBody(buildingBody);
-
   }
 
 	scene.add(city);
@@ -306,13 +274,6 @@ function render(){
 		renderer.setViewport(window.innerWidth-(size*2), window.innerHeight-(size*2), size*2, size*2);
 	  renderer.render( scene, personalCamera );
 	}
-  if(sphereBody){
-		moveSphere();
-	  updatePhysics();
-	}
-  if (typeof(controls) === 'undefined') moveCamera();
-  if (typeof(controls) !== 'undefined') controls.update();
-  if (typeof(stats) !== 'undefined') stats.update();
 }
 
 function updateAspectRatio(){
@@ -426,115 +387,4 @@ function set_city_backGround(fondo){
   backX.position.z = 192;
   scene.add(backX);
 	scene.add(backZ);
-}
-
-function getPhysics() {
-  world = new CANNON.World();
-  world.gravity.set(0, -400, 0); // earth = -9.82 m/s
-  world.broadphase = new CANNON.NaiveBroadphase();
-  world.broadphase.useBoundingBoxes = true;
-  var solver = new CANNON.GSSolver();
-  solver.iterations = 7;
-  solver.tolerance = 0.1;
-  world.solver = solver;
-  world.quatNormalizeSkip = 0;
-  world.quatNormalizeFast = false;
-  world.defaultContactMaterial.contactEquationStiffness = 1e9;
-  world.defaultContactMaterial.contactEquationRelaxation = 4;
-  return world;
-}
-
-function getPhysicsMaterial() {
-  physicsMaterial = new CANNON.Material('slipperyMaterial');
-  var physicsContactMaterial = new CANNON.ContactMaterial(
-      physicsMaterial, physicsMaterial, 0.0, 0.3);
-  world.addContactMaterial(physicsContactMaterial);
-}
-
-function addSpherePhysics() {
-  sphereBody = new CANNON.Body({
-    mass: 1,
-    material: physicsMaterial,
-    shape: new CANNON.Sphere(30),
-    linearDamping: 0.5,
-    position: new CANNON.Vec3(20, 20, 20)
-  });
-  world.addBody(sphereBody);
-}
-
-function addListeners() {
-  window.addEventListener('keydown', function(e) {
-    pressed[e.key.toUpperCase()] = true;
-  })
-  window.addEventListener('keyup', function(e) {
-    pressed[e.key.toUpperCase()] = false;
-  })
-  window.addEventListener('resize', function(e) {
-    windowHalfX = window.innerWidth / 2;
-    windowHalfY = window.innerHeight / 2;
-    personalCamera.aspect = window.innerWidth / window.innerHeight;
-    perspectiva.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    if (typeof(controls) != 'undefined') controls.handleResize();
-  })
-}
-
-function moveSphere() {
-  var delta = clock.getDelta(); // seconds
-  var moveDistance = 5 * delta; // n pixels per second
-  var rotateAngle = Math.PI / 2 * delta; // 90 deg per second
-
-  // move forwards, backwards, left, or right
-  if (pressed['W'] || pressed['ARROWUP']) {
-    sphereBody.velocity.z += moveDistance;
-  }
-  if (pressed['S'] || pressed['ARROWDOWN']) {
-    sphereBody.velocity.z -= moveDistance;
-  }
-  if (pressed['A'] || pressed['ARROWLEFT']) {
-    sphereBody.velocity.x += moveDistance;
-  }
-  if (pressed['D'] || pressed['ARROWRIGHT']) {
-    sphereBody.velocity.x -= moveDistance;
-  }
-}
-
-
-function moveCamera() {
-	if(personalCamera){
-	  personalCamera.position.x = sphereBody.position.x + 0;
-	  personalCamera.position.y = sphereBody.position.y + 5;
-	  personalCamera.position.z = sphereBody.position.z + -10;
-	  personalCamera.lookAt(sphereGroup.position);
-	}
-}
-
-function updatePhysics() {
-  world.step(1/60);
-  sphereGroup.position.copy(sphereBody.position);
-  sphereGroup.quaternion.copy(sphereBody.quaternion);
-}
-
-function getSphere(scene) {
-  var geometry = new THREE.SphereGeometry( 2, 12, 9 );
-  var material = new THREE.MeshPhongMaterial({
-    color: 0xd0901d,
-    emissive: 0xaa0000,
-    side: THREE.DoubleSide,
-    flatShading: true
-  });
-  var sphere = new THREE.Mesh( geometry, material );
-  // allow the sphere to cast a shadow
-  sphere.castShadow = true;
-  sphere.receiveShadow = false;
-
-	sphere.position.x = 10;
-	sphere.position.z = 10;
-  // create a group for translations and rotations
-  var sphereGroup = new THREE.Group();
-  sphereGroup.add(sphere)
-  sphereGroup.castShadow = true;
-  sphereGroup.receiveShadow = false;
-  scene.add(sphereGroup);
-  return [sphere, sphereGroup];
 }

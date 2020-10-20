@@ -333,7 +333,7 @@ var sphereBody, floorBody;
 // add meshes
 var loader = new THREE.TextureLoader();
 var floors = getPlanes(scene, loader);
-var background = getBackground(scene, loader);
+//var background = getBackground(scene, loader);
 var sphereData = getSphere(scene);
 var sphere = sphereData[0];
 var sphereGroup = sphereData[1];
