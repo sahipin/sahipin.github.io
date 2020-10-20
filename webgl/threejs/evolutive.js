@@ -130,7 +130,7 @@ function loadScene() {
 				 set_city_backGround(fondo);
 				});
 
-	loader.load('images/edificios/asfalto.jpg' , function(texture)
+	var tex = loader.load('images/edificios/asfalto.jpg' , function(texture)
 				{
 				 var fondo = new THREE.MeshBasicMaterial({ map:texture });
 				 var suelo = new THREE.PlaneGeometry(384,384,10,10);
@@ -139,12 +139,12 @@ function loadScene() {
 					asfalto.position.x = 192;
 					asfalto.position.z = 192;
 
-					texture.wrapS = THREE.RepeatWrapping;
-					texture.wrapT = THREE.RepeatWrapping;
-					texture.repeat.set( 10, 10 );
-
 	 				scene.add(asfalto);
 				});
+
+		tex.wrapS = THREE.RepeatWrapping;
+		tex.wrapT = THREE.RepeatWrapping;
+		tex.repeat.set( 10, 10 );
 
 }
 
