@@ -19,7 +19,7 @@ var cenital;
 var effectController;
 var backX, backZ;
 var contenido;
-
+var notified = 0;
 // Acciones
 init();
 loadScene();
@@ -130,6 +130,13 @@ function loadScene() {
 				 set_city_backGround(fondo);
 				});
 
+	loader.load('images/edificios/asfalto.jpg' , function(texture)
+				{
+				 var fondo = new THREE.MeshBasicMaterial({ map:texture });
+				 var suelo = new THREE.PlaneGeometry(384,384,10,10);
+	 				asfalto = new THREE.Mesh(suelo, fondo);
+	 				scene.add(asfalto);
+				});
 
 }
 
@@ -160,9 +167,15 @@ function generaCiudad() {
 	city = new THREE.Object3D();
 	city.name = "city";
 
-  if(!contenido)
+  if(!contenido){
+		if(!notified){
+			alert("No has cargado ninguna ciudad");
+			notified =1;
+		}
 		return;
-  var lines = contenido.split('\n');
+	}
+
+	var lines = contenido.split('\n');
 
   for (var i=0 ; i < lines.length; i++){
     var tokens = lines[i].split(' ');
@@ -275,7 +288,7 @@ function setupGui() {
 	// Construccion del menu
 	var h = gui.addFolder("Control ciudad");
 	var hour = h.add(effectController, "time", 0, 2, 1).name("Hora");
-	var separationDist = h.add(effectController, "separation", 1, 5, 1).name("Separación edificios");
+	var separationDist = h.add(effectController, "separation", 1, 4, 1).name("Separación edificios");
 	var heightConf = h.add(effectController, "height", 20, 100, 5).name("Altura edificios");
 	hour.onChange(function(time){
 		const loader = new THREE.TextureLoader();
@@ -310,10 +323,12 @@ function setupGui() {
 	separationDist.onChange(function(distance){
 		separation_dist = distance;
 		generaCiudad();
+
 	});
 	heightConf.onChange(function(height){
 		max_height = height;
-		generaCiudad();
+	  generaCiudad();
+
 	});
 }
 
