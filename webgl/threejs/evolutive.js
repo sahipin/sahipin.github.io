@@ -82,31 +82,31 @@ function init() {
 	*/
 	loader.load('images/edificios/escuela.jpg' , function(texture)
 		{
-		 materialE = new THREE.MeshBasicMaterial({ map:texture , repeat : THREE.Vector2(1,4)});
+		 materialE = new THREE.MeshBasicMaterial({ map:texture });
 		});
 	loader.load('images/edificios/farmacia.jpg' , function(texture)
 		{
-		materialF = new THREE.MeshBasicMaterial({ map:texture , repeat : THREE.Vector2(1,4)});
+		materialF = new THREE.MeshBasicMaterial({ map:texture });
 		});
 	loader.load('images/edificios/hospital.jpg' , function(texture)
 		{
-		materialH = new THREE.MeshBasicMaterial({ map:texture , repeat : THREE.Vector2(1,4)});
+		materialH = new THREE.MeshBasicMaterial({ map:texture });
 		});
 	loader.load('images/edificios/residencia.jpg' , function(texture)
 		{
-		materialR = new THREE.MeshBasicMaterial({ map:texture , repeat : THREE.Vector2(1,4)});
+		materialR = new THREE.MeshBasicMaterial({ map:texture });
 		});
 	loader.load('images/edificios/supermercado.jpg' , function(texture)
 		{
-		materialS = new THREE.MeshBasicMaterial({ map:texture , repeat : THREE.Vector2(1,4)});
+		materialS = new THREE.MeshBasicMaterial({ map:texture });
 		});
 	loader.load('images/edificios/gimnasio.jpg' , function(texture)
 		{
-		materialG = new THREE.MeshBasicMaterial({ map:texture , repeat : THREE.Vector2(1,4)});
+		materialG = new THREE.MeshBasicMaterial({ map:texture });
 		});
 	loader.load('images/edificios/centro_comercial.jpg' , function(texture)
 		{
-		material_default = new THREE.MeshBasicMaterial({ map:texture , repeat : THREE.Vector2(1,4)});
+		material_default = new THREE.MeshBasicMaterial({ map:texture});
 		});
 
 }
@@ -141,7 +141,7 @@ function loadScene() {
 
 					texture.wrapS = THREE.RepeatWrapping;
 					texture.wrapT = THREE.RepeatWrapping;
-					texture.repeat.set( 80, 80 );
+					texture.repeat.set( 10, 10 );
 
 	 				scene.add(asfalto);
 				});
@@ -214,6 +214,10 @@ function generaCiudad() {
     else {
       material = material_default
     }
+		material.wrapS = THREE.RepeatWrapping;
+		material.wrapT = THREE.RepeatWrapping;
+		material.repeat.set( tokens[3], tokens[4] );
+
     var building = new THREE.Mesh(cube_building, material);
     building.position.x = separation_dist * tokens[0]*1+tokens[3]/2+0.5;
     building.position.z = separation_dist * tokens[1]*1+tokens[4]/2+0.5;
