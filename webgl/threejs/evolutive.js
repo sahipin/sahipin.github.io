@@ -81,31 +81,31 @@ function init() {
 	             scene.background = texture;
 	            });
 	*/
-	loader.load('images/edificios/escuela.jpg' , function(texture)
+	texE = loader.load('images/edificios/escuela.jpg' , function(texture)
 		{
 		 materialE = new THREE.MeshBasicMaterial({ map:texture });
 		});
-	loader.load('images/edificios/farmacia.jpg' , function(texture)
+	texF = loader.load('images/edificios/farmacia.jpg' , function(texture)
 		{
 		materialF = new THREE.MeshBasicMaterial({ map:texture });
 		});
-	loader.load('images/edificios/hospital.jpg' , function(texture)
+	texH = loader.load('images/edificios/hospital.jpg' , function(texture)
 		{
 		materialH = new THREE.MeshBasicMaterial({ map:texture });
 		});
-	loader.load('images/edificios/residencia.jpg' , function(texture)
+	texR = loader.load('images/edificios/residencia.jpg' , function(texture)
 		{
 		materialR = new THREE.MeshBasicMaterial({ map:texture });
 		});
-	loader.load('images/edificios/supermercado.jpg' , function(texture)
+	texS = loader.load('images/edificios/supermercado.jpg' , function(texture)
 		{
 		materialS = new THREE.MeshBasicMaterial({ map:texture });
 		});
-	loader.load('images/edificios/gimnasio.jpg' , function(texture)
+	texG = loader.load('images/edificios/gimnasio.jpg' , function(texture)
 		{
 		materialG = new THREE.MeshBasicMaterial({ map:texture });
 		});
-	loader.load('images/edificios/centro_comercial.jpg' , function(texture)
+	tex_default = loader.load('images/edificios/centro_comercial.jpg' , function(texture)
 		{
 		material_default = new THREE.MeshBasicMaterial({ map:texture});
 		});
