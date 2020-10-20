@@ -59,8 +59,8 @@ function setCameras(ar ){
 function setPersonalCamera (){
 
 	  var ar =  window.innerWidth / window.innerHeight;
-		personalCamera = new THREE.PerspectiveCamera(75, ar, 0.1, 1000);
-		personalCamera.position.set(0, 200, -50);
+		personalCamera = new THREE.PerspectiveCamera(75, ar, 0.1, 100);
+		personalCamera.position.set(0, 20, -50);
 		personalCamera.lookAt(scene.position);
 		scene.add(personalCamera);
 }
@@ -153,7 +153,7 @@ function loadScene() {
 				{
 				 var fondo = new THREE.MeshBasicMaterial({ map:texture });
 				 var suelo = new THREE.PlaneGeometry(384,384,10,10);
-	 				asfalto = new THREE.Mesh(suelo, fondo);
+	 				asfalto = new THREE.Mesh(suelo, material);
 					asfalto.rotation.x = -Math.PI / 2;
 					asfalto.position.x = 192;
 					asfalto.position.z = 192;
@@ -448,7 +448,7 @@ function addSpherePhysics() {
     material: physicsMaterial,
     shape: new CANNON.Sphere(30),
     linearDamping: 0.5,
-    position: new CANNON.Vec3(1000, 500, -2000)
+    position: new CANNON.Vec3(10, 10, 10)
   });
   world.addBody(sphereBody);
 }
@@ -472,7 +472,7 @@ function addListeners() {
 
 function moveSphere() {
   var delta = clock.getDelta(); // seconds
-  var moveDistance = 500 * delta; // n pixels per second
+  var moveDistance = 5 * delta; // n pixels per second
   var rotateAngle = Math.PI / 2 * delta; // 90 deg per second
 
   // move forwards, backwards, left, or right
@@ -494,8 +494,8 @@ function moveSphere() {
 function moveCamera() {
 	if(personalCamera){
 	  personalCamera.position.x = sphereBody.position.x + 0;
-	  personalCamera.position.y = sphereBody.position.y + 50;
-	  personalCamera.position.z = sphereBody.position.z + -200;
+	  personalCamera.position.y = sphereBody.position.y + 5;
+	  personalCamera.position.z = sphereBody.position.z + -10;
 	  personalCamera.lookAt(sphereGroup.position);
 	}
 }
@@ -507,7 +507,7 @@ function updatePhysics() {
 }
 
 function getSphere(scene) {
-  var geometry = new THREE.SphereGeometry( 2, 2, 2 );
+  var geometry = new THREE.SphereGeometry( 20, 20, 20 );
   var material = new THREE.MeshPhongMaterial({
     color: 0xd0901d,
     emissive: 0xaa0000,
@@ -519,8 +519,8 @@ function getSphere(scene) {
   sphere.castShadow = true;
   sphere.receiveShadow = false;
 
-	sphere.position.x = 100;
-	sphere.position.y = 100;
+	sphere.position.x = 10;
+	sphere.position.z = 10;
   // create a group for translations and rotations
   var sphereGroup = new THREE.Group();
   sphereGroup.add(sphere)
