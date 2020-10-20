@@ -325,8 +325,8 @@ var renderer = getRenderer();
 var world = getPhysics();
 var physicsMaterial = getPhysicsMaterial();
 var controlMouse = false;
-var controls = getControls(cameraPersonal, renderer);
-controls.enabled = false;
+//var controls = getControls(cameraPersonal, renderer);
+//controls.enabled = false;
 
 // global body references
 var sphereBody, floorBody;
@@ -341,5 +341,5 @@ var sphereGroup = sphereData[1];
 
 addObjectPhysics();
 addListeners();
-setupGui();
+//setupGui();
 render();
