@@ -8,6 +8,7 @@
 // motor render (dibujar), estructura datos almacen dibujos, desde donde dibujamos
 var renderer, scene, camera;
 var materialE,materialG,materialF,materialR,materialS,materialH,material_default;
+var texE,texG,texF,texR,texS,texH,tex_default;
 // Variables globales
 var city, angulo = 0, material;
 var r = t = 40;
@@ -190,33 +191,36 @@ function generaCiudad() {
     // Geometrias
     var height = Math.random() * (max_height - 5) + 5;
     var cube_building = new THREE.BoxGeometry(tokens[3]*1, height, tokens[4]*1);
-
+    var tex_to_modify = tex_default;
+		material = material_default;
     /* OBJETOS */
     if(tokens[2] == "E"){
-			material = materialE
-
+			material = materialE;
+      tex_to_modify = texE;
     }
     else if(tokens[2] == "G"){
-      material = materialG
+      material = materialG;
+      tex_to_modify = texG;
     }
     else if(tokens[2] == "F"){
-      material = materialF
+      material = materialF;
+      tex_to_modify = texF;
     }
     else if(tokens[2] == "R"){
-      material = materialR
+      material = materialR;
+      tex_to_modify = texR;
     }
     else if(tokens[2] == "S"){
-      material = materialS
+      material = materialS;
+      tex_to_modify = texS;
     }
     else if(tokens[2] == "H"){
-      material = materialH
+      material = materialH;
+      tex_to_modify = texH;
     }
-    else {
-      material = material_default
-    }
-		material.wrapS = THREE.RepeatWrapping;
-		material.wrapT = THREE.RepeatWrapping;
-		material.repeat.set( tokens[3], tokens[4] );
+		tex_to_modify.wrapS = THREE.RepeatWrapping;
+		tex_to_modify.wrapT = THREE.RepeatWrapping;
+		tex_to_modify.repeat.set( tokens[3], tokens[4] );
 
     var building = new THREE.Mesh(cube_building, material);
     building.position.x = separation_dist * tokens[0]*1+tokens[3]/2+0.5;
