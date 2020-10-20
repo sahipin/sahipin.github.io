@@ -160,8 +160,8 @@ function loadScene() {
 
 	 				scene.add(asfalto);
 
-					var q = suelo.quaternion;
-			    floorBody = new CANNON.Body({
+					var q = asfalto.quaternion;
+			    var floorBody = new CANNON.Body({
 			      mass: 0, // mass = 0 makes the body static
 			      material: physicsMaterial,
 			      shape: new CANNON.Plane(),
