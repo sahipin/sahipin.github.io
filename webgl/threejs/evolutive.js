@@ -135,7 +135,7 @@ function loadScene() {
 				 var fondo = new THREE.MeshBasicMaterial({ map:texture });
 				 var suelo = new THREE.PlaneGeometry(384,384,10,10);
 	 				asfalto = new THREE.Mesh(suelo, fondo);
-					asfalto.rotation.x = Math.PI / 2;
+					asfalto.rotation.x = -Math.PI / 2;
 					asfalto.position.x = 192;
 					asfalto.position.z = 192;
 	 				scene.add(asfalto);
