@@ -220,7 +220,7 @@ function generaCiudad() {
     }
 		tex_to_modify.wrapS = THREE.RepeatWrapping;
 		tex_to_modify.wrapT = THREE.RepeatWrapping;
-		tex_to_modify.repeat.set( tokens[3], tokens[4] );
+		tex_to_modify.repeat.set( tokens[4], tokens[3] );
 
     var building = new THREE.Mesh(cube_building, material);
     building.position.x = separation_dist * tokens[0]*1+tokens[3]/2+0.5;
