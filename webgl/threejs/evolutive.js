@@ -25,16 +25,13 @@ var world, physicsMaterial;
 var sphereBody;
 var pressed = {};
 var clock = new THREE.Clock();
+var sphereData, sphere, sphereGroup;
 // Acciones
 init();
 loadScene();
 setupGui();
 getPhysics();
 getPhysicsMaterial();
-var sphereData = getSphere(scene);
-var sphere = sphereData[0];
-var sphereGroup = sphereData[1];
-addSpherePhysics();
 addListeners();
 render();
 
@@ -156,7 +153,7 @@ function loadScene() {
 				{
 				 var fondo = new THREE.MeshBasicMaterial({ map:texture });
 				 var suelo = new THREE.PlaneGeometry(384,384,10,10);
-	 				asfalto = new THREE.Mesh(suelo, fondo);
+	 				asfalto = new THREE.Mesh(suelo, material);
 					asfalto.rotation.x = -Math.PI / 2;
 					asfalto.position.x = 192;
 					asfalto.position.z = 192;
@@ -207,6 +204,10 @@ function generaCiudad() {
 	}
 	if(!personalCamera){
 		setPersonalCamera ();
+		sphereData = getSphere(scene);
+		sphere = sphereData[0];
+		sphereGroup = sphereData[1];
+		addSpherePhysics();
 	}
 	console.log("generating");
 	loading_city = 1;
@@ -296,9 +297,10 @@ function render(){
 		renderer.setViewport(window.innerWidth-(size*2), window.innerHeight-(size*2), size*2, size*2);
 	  renderer.render( scene, personalCamera );
 	}
-
-	moveSphere();
-  updatePhysics();
+  if(sphereBody){
+		moveSphere();
+	  updatePhysics();
+	}
   if (typeof(controls) === 'undefined') moveCamera();
   if (typeof(controls) !== 'undefined') controls.update();
   if (typeof(stats) !== 'undefined') stats.update();
@@ -461,8 +463,8 @@ function addListeners() {
   window.addEventListener('resize', function(e) {
     windowHalfX = window.innerWidth / 2;
     windowHalfY = window.innerHeight / 2;
-    cameraPersonal.aspect = window.innerWidth / window.innerHeight;
-    cameraPersonal.updateProjectionMatrix();
+    personalCamera.aspect = window.innerWidth / window.innerHeight;
+    perspectiva.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
     if (typeof(controls) != 'undefined') controls.handleResize();
   })
@@ -505,7 +507,7 @@ function updatePhysics() {
 }
 
 function getSphere(scene) {
-  var geometry = new THREE.SphereGeometry( 30, 12, 9 );
+  var geometry = new THREE.SphereGeometry( 2, 2, 2 );
   var material = new THREE.MeshPhongMaterial({
     color: 0xd0901d,
     emissive: 0xaa0000,
