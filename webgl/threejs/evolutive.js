@@ -266,8 +266,17 @@ function generaCiudad() {
     building.position.x = separation_dist * tokens[0]*1+tokens[3]/2+0.5;
     building.position.z = separation_dist * tokens[1]*1+tokens[4]/2+0.5;
     building.position.y = height/2;
-
     city.add(building);
+
+		var q = building.quaternion;
+		var buildingBody = new CANNON.Body({
+			mass: 0, // mass = 0 makes the body static
+			material: physicsMaterial,
+			shape: new CANNON.Box(new CANNON.Vec3(tokens[3]*1, height, tokens[4]*1)),
+			quaternion: new CANNON.Quaternion(-q._x, q._y, q._z, q._w)
+		});
+	  world.addBody(buildingBody);
+
   }
 
 	scene.add(city);
@@ -448,7 +457,7 @@ function addSpherePhysics() {
     material: physicsMaterial,
     shape: new CANNON.Sphere(30),
     linearDamping: 0.5,
-    position: new CANNON.Vec3(10, 10, 10)
+    position: new CANNON.Vec3(20, 20, 20)
   });
   world.addBody(sphereBody);
 }
@@ -507,7 +516,7 @@ function updatePhysics() {
 }
 
 function getSphere(scene) {
-  var geometry = new THREE.SphereGeometry( 20, 20, 20 );
+  var geometry = new THREE.SphereGeometry( 2, 12, 9 );
   var material = new THREE.MeshPhongMaterial({
     color: 0xd0901d,
     emissive: 0xaa0000,
