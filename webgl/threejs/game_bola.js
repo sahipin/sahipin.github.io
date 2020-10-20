@@ -324,7 +324,6 @@ var light = getLight(scene);
 var renderer = getRenderer();
 var world = getPhysics();
 var physicsMaterial = getPhysicsMaterial();
-var controlMouse = false;
 //var controls = getControls(cameraPersonal, renderer);
 //controls.enabled = false;
 

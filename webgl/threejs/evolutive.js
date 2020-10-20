@@ -6,7 +6,7 @@
 
 // Variables globales imprescindibles
 // motor render (dibujar), estructura datos almacen dibujos, desde donde dibujamos
-var renderer, scene, camera;
+var renderer, scene, camera, cenital, personalCamera;
 var materialE,materialG,materialF,materialR,materialS,materialH,material_default;
 var texE,texG,texF,texR,texS,texH,tex_default;
 // Variables globales
@@ -15,17 +15,27 @@ var r = t = 40;
 var l = b = -r;
 var max_height = 20, separation_dist = 1;
 var cameraController;
-var cenital;
 // Global GUI
 var effectController;
 var backX, backZ;
 var contenido;
 var notified = 0;
 var loading_city = 0;
+var world, physicsMaterial;
+var sphereBody;
+var pressed = {};
+var clock = new THREE.Clock();
 // Acciones
 init();
 loadScene();
 setupGui();
+getPhysics();
+getPhysicsMaterial();
+var sphereData = getSphere(scene);
+var sphere = sphereData[0];
+var sphereGroup = sphereData[1];
+addSpherePhysics();
+addListeners();
 render();
 
 
@@ -39,13 +49,23 @@ function setCameras(ar ){
 	cenital.position.set(0,130,0);
 	cenital.lookAt(origen);
 	cenital.up = new THREE.Vector3(0,0,-1);
+
 	//perspectiva
 	camera = new THREE.PerspectiveCamera( 50, ar, 0.1, 10000 ); // valores de cerca y lejos (los dos ultimos)
     // Movemos la camare respecto al sistema de referencia de la scena
-    camera.position.set(300, 100, 300); // traslado de la camara desde el origen de coordenadas
-    camera.lookAt(new THREE.Vector3(0,0,0));
-    scene.add(cenital);
+  camera.position.set(300, 100, 300); // traslado de la camara desde el origen de coordenadas
+  camera.lookAt(new THREE.Vector3(0,0,0));
+  scene.add(cenital);
 	scene.add(camera);
+}
+
+function setPersonalCamera (){
+
+	  var ar =  window.innerWidth / window.innerHeight;
+		personalCamera = new THREE.PerspectiveCamera(75, ar, 0.1, 10000);
+		personalCamera.position.set(0, 2000, -5000);
+		personalCamera.lookAt(scene.position);
+		scene.add(personalCamera);
 }
 
 
@@ -55,7 +75,7 @@ function init() {
   // Motor de render
   renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor( new THREE.Color(0x000011) );
+  renderer.setClearColor( new THREE.Color(0xffffff) );
   document.getElementById("container").appendChild(renderer.domElement);
   renderer.autoClear = false;
   // Escena
@@ -142,6 +162,17 @@ function loadScene() {
 					asfalto.position.z = 192;
 
 	 				scene.add(asfalto);
+
+					var q = suelo.quaternion;
+			    floorBody = new CANNON.Body({
+			      mass: 0, // mass = 0 makes the body static
+			      material: physicsMaterial,
+			      shape: new CANNON.Plane(),
+			      quaternion: new CANNON.Quaternion(-q._x, q._y, q._z, q._w)
+			    });
+			    world.addBody(floorBody);
+
+
 				});
 
 		tex.wrapS = THREE.RepeatWrapping;
@@ -174,6 +205,10 @@ function generaCiudad() {
   if (loading_city == 1){
 		return;
 	}
+	if(!personalCamera){
+		setPersonalCamera ();
+	}
+	console.log("generating");
 	loading_city = 1;
 	var selectedObject = scene.getObjectByName(city.name);
   scene.remove( selectedObject );
@@ -257,6 +292,16 @@ function render(){
   renderer.setViewport(0, 0, size, size);
   renderer.render( scene, cenital );
 
+	if(personalCamera){
+		renderer.setViewport(window.innerWidth-(size*2), window.innerHeight-(size*2), size*2, size*2);
+	  renderer.render( scene, personalCamera );
+	}
+
+	moveSphere();
+  updatePhysics();
+  if (typeof(controls) === 'undefined') moveCamera();
+  if (typeof(controls) !== 'undefined') controls.update();
+  if (typeof(stats) !== 'undefined') stats.update();
 }
 
 function updateAspectRatio(){
@@ -267,23 +312,27 @@ function updateAspectRatio(){
 	var size = Math.min(window.innerWidth, window.innerHeight)/4;
 
 	if(ar>1){
-	  //cenital.left = l*ar;
+		if(personalCamera){
+		  personalCamera.left = l*ar;
+		  personalCamera.right = r*ar;
+		  personalCamera.bottom = b;
+		  personalCamera.top = t;
+		}
 	  camera.left = l*ar;
-	  //cenital.right = r*ar;
 	  camera.right = r*ar;
-	  //cenital.bottom = b;
 	  camera.bottom = b;
-	  //cenital.top = t;
 	  camera.top = t;
 	}
 	else{
-	  //cenital.left = l;
+		if(personalCamera){
+		  personalCamera.left = l;
+		  personalCamera.right = r;
+		  personalCamera.bottom = b/ar;
+		  personalCamera.bottom = t/ar;
+		}
 	  camera.left = l;
-	  //cenital.right = r;
 	  camera.right = r;
-	  //cenital.bottom = b/ar;
 	  camera.bottom = b/ar;
-	  //cenital.bottom = t/ar;
 	  camera.top = t/ar;
 	}
 
@@ -291,7 +340,9 @@ function updateAspectRatio(){
 	//se ha variado el valumen de la vista
 	//se ha variado la matriz de proyeccion
 	camera.updateProjectionMatrix();
-	//cenital.updateProjectionMatrix();
+	if(personalCamera){
+		personalCamera.updateProjectionMatrix();
+	}
 	render();
 }
 
@@ -364,4 +415,112 @@ function set_city_backGround(fondo){
   backX.position.z = 192;
   scene.add(backX);
 	scene.add(backZ);
+}
+
+function getPhysics() {
+  world = new CANNON.World();
+  world.gravity.set(0, -400, 0); // earth = -9.82 m/s
+  world.broadphase = new CANNON.NaiveBroadphase();
+  world.broadphase.useBoundingBoxes = true;
+  var solver = new CANNON.GSSolver();
+  solver.iterations = 7;
+  solver.tolerance = 0.1;
+  world.solver = solver;
+  world.quatNormalizeSkip = 0;
+  world.quatNormalizeFast = false;
+  world.defaultContactMaterial.contactEquationStiffness = 1e9;
+  world.defaultContactMaterial.contactEquationRelaxation = 4;
+  return world;
+}
+
+function getPhysicsMaterial() {
+  physicsMaterial = new CANNON.Material('slipperyMaterial');
+  var physicsContactMaterial = new CANNON.ContactMaterial(
+      physicsMaterial, physicsMaterial, 0.0, 0.3);
+  world.addContactMaterial(physicsContactMaterial);
+}
+
+function addSpherePhysics() {
+  sphereBody = new CANNON.Body({
+    mass: 1,
+    material: physicsMaterial,
+    shape: new CANNON.Sphere(30),
+    linearDamping: 0.5,
+    position: new CANNON.Vec3(1000, 500, -2000)
+  });
+  world.addBody(sphereBody);
+}
+
+function addListeners() {
+  window.addEventListener('keydown', function(e) {
+    pressed[e.key.toUpperCase()] = true;
+  })
+  window.addEventListener('keyup', function(e) {
+    pressed[e.key.toUpperCase()] = false;
+  })
+  window.addEventListener('resize', function(e) {
+    windowHalfX = window.innerWidth / 2;
+    windowHalfY = window.innerHeight / 2;
+    cameraPersonal.aspect = window.innerWidth / window.innerHeight;
+    cameraPersonal.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    if (typeof(controls) != 'undefined') controls.handleResize();
+  })
+}
+
+function moveSphere() {
+  var delta = clock.getDelta(); // seconds
+  var moveDistance = 500 * delta; // n pixels per second
+  var rotateAngle = Math.PI / 2 * delta; // 90 deg per second
+
+  // move forwards, backwards, left, or right
+  if (pressed['W'] || pressed['ARROWUP']) {
+    sphereBody.velocity.z += moveDistance;
+  }
+  if (pressed['S'] || pressed['ARROWDOWN']) {
+    sphereBody.velocity.z -= moveDistance;
+  }
+  if (pressed['A'] || pressed['ARROWLEFT']) {
+    sphereBody.velocity.x += moveDistance;
+  }
+  if (pressed['D'] || pressed['ARROWRIGHT']) {
+    sphereBody.velocity.x -= moveDistance;
+  }
+}
+
+
+function moveCamera() {
+	if(personalCamera){
+	  personalCamera.position.x = sphereBody.position.x + 0;
+	  personalCamera.position.y = sphereBody.position.y + 50;
+	  personalCamera.position.z = sphereBody.position.z + -200;
+	  personalCamera.lookAt(sphereGroup.position);
+	}
+}
+
+function updatePhysics() {
+  world.step(1/60);
+  sphereGroup.position.copy(sphereBody.position);
+  sphereGroup.quaternion.copy(sphereBody.quaternion);
+}
+
+function getSphere(scene) {
+  var geometry = new THREE.SphereGeometry( 30, 12, 9 );
+  var material = new THREE.MeshPhongMaterial({
+    color: 0xd0901d,
+    emissive: 0xaa0000,
+    side: THREE.DoubleSide,
+    flatShading: true
+  });
+  var sphere = new THREE.Mesh( geometry, material );
+  // allow the sphere to cast a shadow
+  sphere.castShadow = true;
+  sphere.receiveShadow = false;
+  // create a group for translations and rotations
+  var sphereGroup = new THREE.Group();
+  sphereGroup.add(sphere)
+  sphereGroup.castShadow = true;
+  sphereGroup.receiveShadow = false;
+  scene.add(sphereGroup);
+  return [sphere, sphereGroup];
 }
