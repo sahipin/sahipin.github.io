@@ -59,8 +59,8 @@ function setCameras(ar ){
 function setPersonalCamera (){
 
 	  var ar =  window.innerWidth / window.innerHeight;
-		personalCamera = new THREE.PerspectiveCamera(75, ar, 0.1, 10000);
-		personalCamera.position.set(0, 2000, -5000);
+		personalCamera = new THREE.PerspectiveCamera(75, ar, 0.1, 1000);
+		personalCamera.position.set(0, 200, -50);
 		personalCamera.lookAt(scene.position);
 		scene.add(personalCamera);
 }
@@ -153,7 +153,7 @@ function loadScene() {
 				{
 				 var fondo = new THREE.MeshBasicMaterial({ map:texture });
 				 var suelo = new THREE.PlaneGeometry(384,384,10,10);
-	 				asfalto = new THREE.Mesh(suelo, material);
+	 				asfalto = new THREE.Mesh(suelo, fondo);
 					asfalto.rotation.x = -Math.PI / 2;
 					asfalto.position.x = 192;
 					asfalto.position.z = 192;
@@ -518,6 +518,9 @@ function getSphere(scene) {
   // allow the sphere to cast a shadow
   sphere.castShadow = true;
   sphere.receiveShadow = false;
+
+	sphere.position.x = 100;
+	sphere.position.y = 100;
   // create a group for translations and rotations
   var sphereGroup = new THREE.Group();
   sphereGroup.add(sphere)
