@@ -145,7 +145,7 @@ function loadScene() {
 
 		tex.wrapS = THREE.RepeatWrapping;
 		tex.wrapT = THREE.RepeatWrapping;
-		tex.repeat.set( 10, 10 );
+		tex.repeat.set( 90, 90 );
 
 }
 
