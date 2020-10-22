@@ -107,7 +107,7 @@ function loadScene() {
 	//Textura de suelo --> No wrap
 	var floor_texture = new THREE.TextureLoader().load('images/pisometalico_1024.jpg');
 	floor_texture.repeat.set(2,2); // repeat
-	floor_texture.wrapS = texturaSuelo.wrapT = THREE.MirroredRepeatWrapping;
+	floor_texture.wrapS = floor_texture.wrapT = THREE.MirroredRepeatWrapping;
 
 	//wood
 	var wood_texture = new THREE.TextureLoader().load('images/wood512.jpg');
@@ -205,7 +205,7 @@ function loadScene() {
 
 	/* OBJETOS */
 	var floor = new THREE.Mesh(planeGeom, floor_material);
-  ploor.rotation.x = Math.PI / 2;
+  floor.rotation.x = Math.PI / 2;
 
 	robot = new THREE.Object3D();
 	robot.position.y = 10;
