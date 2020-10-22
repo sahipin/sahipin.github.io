@@ -73,14 +73,82 @@ function init() {
   cameraController.noKeys = true;
 
 
+	//Luces
+	//Luz ambiental (color, intensidad)
+	var luzAmbiente = new THREE.AmbientLight(0xFFFFFF,0.1);
+	scene.add(luzAmbiente);
+
+	//Luz puntual (color, intensidad)
+	var luzPuntual = new THREE.PointLight(0xBBBB00,0.4);
+	luzPuntual.position.set(-400, 200, -400);
+	scene.add(luzPuntual);
+
+	//luz focal (color, intensidad)
+	var luzFocal = new THREE.SpotLight(0xFFFFFF, 0.8, );
+	//Posición
+	luzFocal.position.set( -200, 400, 0);
+	//Dirección
+	luzFocal.target.position.set(0,0,0);
+	luzFocal.angle = Math.PI / 5;
+	luzFocal.penumbra = 0.6;
+	luzFocal.castShadow = true;
+	luzFocal.shadow.camera.near = 0.1;
+	luzFocal.shadow.camera.far = 1000;
+	luzFocal.shadow.camera.fov = 36;
+
+
   window.addEventListener('resize', updateAspectRatio);
 }
 
 function loadScene() {
   // Cargar la escena con objetos
 
+  // texturas
+	//Textura de suelo --> No wrap
+	var floor_texture = new THREE.TextureLoader().load('images/pisometalico_1024.jpg');
+	floor_texture.repeat.set(2,2); // repeat
+	floor_texture.wrapS = texturaSuelo.wrapT = THREE.MirroredRepeatWrapping;
+
+	//wood
+	var wood_texture = new THREE.TextureLoader().load('images/wood512.jpg');
+	wood_texture.magFilter = THREE.LinearFilter;
+	wood_texture.minFilter = THREE.LinearFilter;
+	wood_texture.wrapS = wood_texture.wrapT = THREE.MirroredRepeatWrapping;
+
+	// metal
+	var metal_texture = new THREE.TextureLoader().load('images/metal_128x128.jpg');
+	metal_texture.magFilter = THREE.LinearFilter;
+	metal_texture.minFilter = THREE.LinearFilter;
+	metal_texture.repeat.set(1,1);
+	metal_texture.wrapS = metal_texture.wrapT = THREE.RepeatWrapping;
+
+	//Mapa entorno
+	var walls = ['images/posx.jpg', 'images/negx.jpg', 'images/posy.jpg',
+	             'images/negy.jpg', 'images/posz.jpg', 'images/negz.jpg',];
+	var world = new THREE.CubeTextureLoader().load(walls);
+
+	//Materiales
+	var floor_material = new THREE.MeshLambertMaterial({color: 'white', map: floor_texture});
+
+	var wood_material_no_bright = new THREE.MeshLambertMaterial({color: 'white', map: wood_texture});
+
+	var metal_material_brights = new THREE.MeshPhongMaterial({color: 'gray',
+																							 specular:'white',
+																							 shininess: 30,
+																							 map: metal_texture});
+	//Metal sin brillos
+	var metal_material_no_bright = new THREE.MeshLambertMaterial({color: 'brown', map: metal_texture});
+	// pinzas
+	var pintas_material = new THREE.MeshLambertMaterial({color: 'white',
+																							 wireframe: false});
+	//Material rotula
+	var rotula_material = new THREE.MeshPhongMaterial({color: 'white',
+																							 specular:'white',
+																							 shininess: 60,
+																							 envMap: world});
+
   // Materiales
-  material = new THREE.MeshBasicMaterial({ color: 'pink', wireframe: true });
+  material = new THREE.MeshBasicMaterial({ color: 'pink', wireframe: false });
 
 	// Geometrias
 	var pinza = new THREE.Geometry();
@@ -136,29 +204,29 @@ function loadScene() {
 
 
 	/* OBJETOS */
-	var plane = new THREE.Mesh(planeGeom, material);
-  plane.rotation.x = Math.PI / 2;
+	var floor = new THREE.Mesh(planeGeom, floor_material);
+  ploor.rotation.x = Math.PI / 2;
 
 	robot = new THREE.Object3D();
 	robot.position.y = 10;
 
-	base = new THREE.Mesh(cilindro_base, material);
+	base = new THREE.Mesh(cilindro_base, metal_material_no_bright);
 	brazo = new THREE.Object3D();
 
-	var eje = new THREE.Mesh(cubo_eje, material);
+	var eje = new THREE.Mesh(cubo_eje, metal_material_no_bright);
 	eje.position.y = 60;
-	var esparrago = new THREE.Mesh(cilindro_esparrago,material);
+	var esparrago = new THREE.Mesh(cilindro_esparrago,metal_material_no_bright);
 	esparrago.rotation.x = Math.PI / 2;
-	var rotula = new THREE.Mesh(esfera_rotula,material);
+	var rotula = new THREE.Mesh(esfera_rotula,rotula_material);
 	rotula.position.y = 120;
 	ante_brazo = new THREE.Object3D();
 	ante_brazo.position.y = 120;
-  var disco = new THREE.Mesh(cilindro_disco,material);
+  var disco = new THREE.Mesh(cilindro_disco,wood_material_no_bright);
 
 	// nervios
 	for ( i = -1; i < 2; i+=2){
 		for ( j = -1; j < 2; j+=2){
-			var nervio = new THREE.Mesh(cubo_nervio, material);
+			var nervio = new THREE.Mesh(cubo_nervio, wood_material_no_bright);
 			nervio.position.y = 40;
 			nervio.position.x = 12 * (i);
 			nervio.position.z = 12 * (j);
@@ -166,7 +234,7 @@ function loadScene() {
 		}
 	}
 
-	var mano = new THREE.Mesh(cilindro_mano,material);
+	var mano = new THREE.Mesh(cilindro_mano,wood_material_no_bright);
 	mano.position.y = 80;
 	mano.rotation.x = Math.PI/2;
 	pinzas = new THREE.Object3D();
@@ -197,7 +265,7 @@ function loadScene() {
 	robot.add(base);
 
 	scene.add(robot);
-	scene.add(plane);
+	scene.add(floor);
 
 
 
@@ -322,6 +390,7 @@ function setupGui() {
 
 }
 
+
 function setKeyControls() {
    document.onkeydown = function(e) {
      switch (e.keyCode) {
@@ -343,4 +412,4 @@ function setKeyControls() {
        break;
      }
    };
- }
+}
