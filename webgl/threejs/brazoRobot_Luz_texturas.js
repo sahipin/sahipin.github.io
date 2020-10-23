@@ -218,7 +218,7 @@ function loadScene() {
 
 	base = new THREE.Mesh(cilindro_base, metal_material_no_bright);
 	base.receiveShadow = true;
-	base..castShadow = true;
+	base.castShadow = true;
 	brazo = new THREE.Object3D();
 
 	var eje = new THREE.Mesh(cubo_eje, metal_material_no_bright);
