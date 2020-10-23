@@ -82,6 +82,8 @@ function init() {
   cameraController.target.set(0,0,0);
   cameraController.noKeys = true;
 
+	//Activar el calculo de sombras
+	renderer.shadowMap.enabled = true;
 
 
 		//Luces
@@ -97,7 +99,7 @@ function init() {
 		//luz focal (color, intensidad)
 		var luzFocal = new THREE.SpotLight(0xFFFFFF, 0.8, );
 		//Posición
-		luzFocal.position.set( -200, 400, 0);
+		luzFocal.position.set( 200, 100, 200);
 		//Dirección
 		luzFocal.target.position.set(0,0,0);
 		luzFocal.angle = Math.PI / 5;
@@ -108,6 +110,9 @@ function init() {
 		luzFocal.shadow.camera.fov = 36;
 		scene.add(luzFocal);
 
+
+		var spotLightHelper = new THREE.SpotLightHelper( luzFocal );
+		scene.add( spotLightHelper );
 
 
 
