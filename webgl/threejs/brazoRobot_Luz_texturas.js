@@ -106,20 +106,21 @@ function init() {
 function loadScene() {
   // Cargar la escena con objetos
 
+  const loader = new THREE.TextureLoader();
   // texturas
 	//Textura de suelo --> No wrap
-	var floor_texture = new THREE.TextureLoader().load('images/pisometalico_1024.jpg');
+	var floor_texture = loader.load('images/pisometalico_1024.jpg');
 	floor_texture.repeat.set(2,2); // repeat
 	floor_texture.wrapS = floor_texture.wrapT = THREE.MirroredRepeatWrapping;
 
 	//wood
-	var wood_texture = new THREE.TextureLoader().load('images/wood512.jpg');
+	var wood_texture = loader.load('images/wood512.jpg');
 	wood_texture.magFilter = THREE.LinearFilter;
 	wood_texture.minFilter = THREE.LinearFilter;
 	wood_texture.wrapS = wood_texture.wrapT = THREE.MirroredRepeatWrapping;
 
 	// metal
-	var metal_texture = new THREE.TextureLoader().load('images/metal_128x128.jpg');
+	var metal_texture = loader.load('images/metal_128x128.jpg');
 	metal_texture.magFilter = THREE.LinearFilter;
 	metal_texture.minFilter = THREE.LinearFilter;
 	metal_texture.repeat.set(1,1);
@@ -131,16 +132,16 @@ function loadScene() {
 	var world = new THREE.CubeTextureLoader().load(walls);
 
 	//Materiales
-	var floor_material = new THREE.MeshLambertMaterial({color: 'white', map: floor_texture});
+	var floor_material = new THREE.MeshLambertMaterial({ map: floor_texture});
 
-	var wood_material_no_bright = new THREE.MeshLambertMaterial({color: 'white', map: wood_texture});
+	var wood_material_no_bright = new THREE.MeshLambertMaterial({ map: wood_texture});
 
-	var metal_material_brights = new THREE.MeshPhongMaterial({color: 'gray',
+	var metal_material_brights = new THREE.MeshPhongMaterial({ 
 																							 specular:'white',
 																							 shininess: 30,
 																							 map: metal_texture});
 	//Metal sin brillos
-	var metal_material_no_bright = new THREE.MeshLambertMaterial({color: 'brown', map: metal_texture});
+	var metal_material_no_bright = new THREE.MeshLambertMaterial({ map: metal_texture});
 	// pinzas
 	var pintas_material = new THREE.MeshLambertMaterial({color: 'white',
 																							 wireframe: false});
