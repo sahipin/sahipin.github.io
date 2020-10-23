@@ -97,7 +97,7 @@ function init() {
 		scene.add(luzPuntual);
 
 		//luz focal (color, intensidad)
-		var luzFocal = new THREE.SpotLight(0x000000, 0.8, );
+		var luzFocal = new THREE.SpotLight(0xFFFFFF, 0.8, );
 		//Posición
 		luzFocal.position.set( 200, 200, 200);
 		//Dirección
