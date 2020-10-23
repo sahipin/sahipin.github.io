@@ -411,7 +411,7 @@ function set_city_backGround(fondo, tex){
 	var back = new THREE.PlaneGeometry(384,185,10,10);
 	backX = new THREE.Mesh(back, fondo);
 	tex.wrapS = THREE.RepeatWrapping;
-	tex.repeat.set(-1);
+	tex.repeat.repeat.x = - 1;
   backZ = new THREE.Mesh(back, fondo);
   backX.rotation.y = Math.PI / 2;
   backX.position.y = 50;
