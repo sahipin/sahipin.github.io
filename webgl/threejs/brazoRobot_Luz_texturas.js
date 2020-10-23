@@ -294,7 +294,7 @@ function loadScene() {
 	});
 
 	var room = new THREE.Mesh(new THREE.CubeGeometry(1000,1000,1000), matParedes);
-	habitacion.position.y = 0;
+	room.position.y = 0;
 	scene.add(room);
 
 
