@@ -152,7 +152,7 @@ function loadScene() {
 																							 envMap: world});
 
   // Materiales
-  material = new THREE.MeshBasicMaterial({ color: 'pink', wireframe: false });
+  material = new THREE.MeshBasicMaterial({ color: 'white', wireframe: false });
 
 	// Geometrias
 	var pinza = new THREE.Geometry();
@@ -197,7 +197,7 @@ function loadScene() {
    new THREE.Face3(7,5,9),
    new THREE.Face3(5,10,9)
   );
-	var planeGeom = new THREE.PlaneGeometry(1000,1000, 20,20);
+	var planeGeom = new THREE.PlaneGeometry(1000,1000,100,100);
 	var cilindro_base = new THREE.CylinderGeometry(50, 50, 15, 80);
 	var cubo_eje = new THREE.BoxGeometry(12, 120, 18);
 	var cilindro_esparrago = new THREE.CylinderGeometry(20, 20, 18, 80);
@@ -209,7 +209,7 @@ function loadScene() {
 
 	/* OBJETOS */
 	var floor = new THREE.Mesh(planeGeom, floor_material);
-  floor.rotation.x = Math.PI / 2;
+  floor.rotation.x = -Math.PI / 2;
 	floor.receiveShadow = true;
 
 	robot = new THREE.Object3D();
