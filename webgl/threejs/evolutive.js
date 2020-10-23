@@ -408,11 +408,11 @@ function setupGui() {
 }
 
 function set_city_backGround(fondo, tex){
+	fondo.side = THREE.DoubleSide;
 	var back = new THREE.PlaneGeometry(384,185,10,10);
 	backX = new THREE.Mesh(back, fondo);
-	tex.wrapS = THREE.RepeatWrapping;
-	tex.repeat.x = - 1;
   backZ = new THREE.Mesh(back, fondo);
+	backZ.scale.x = -1;
   backX.rotation.y = Math.PI / 2;
   backX.position.y = 50;
   backZ.position.y = 50;
