@@ -82,22 +82,33 @@ function init() {
   cameraController.target.set(0,0,0);
   cameraController.noKeys = true;
 
-	//luz focal (color, intensidad)
-	var luzFocal = new THREE.SpotLight(0xFFFFFF, 0.1, );
-	//Posición
-	luzFocal.position.set( -200, 400, 0);
-	//Dirección
-	luzFocal.target.position.set(0,0,0);
-	//Angulo cutoff en radianes
-	luzFocal.angle = Math.PI / 5;
-	//Penumbra hace antialisaing
-	luzFocal.penumbra = 0.6;
-	luzFocal.castShadow = true;
-	//Arreglar problema sombras chungas
-	luzFocal.shadow.camera.near = 0.1;
-	luzFocal.shadow.camera.far = 1000;
-	luzFocal.shadow.camera.fov = 36;
-	scene.add(luzFocal);
+
+
+		//Luces
+		//Luz ambiental (color, intensidad)
+		var luzAmbiente = new THREE.AmbientLight(0xFFFFFF,0.8);
+		scene.add(luzAmbiente);
+
+		//Luz puntual (color, intensidad)
+		var luzPuntual = new THREE.PointLight(0xBBBB00,0.4);
+		luzPuntual.position.set(-400, 200, -400);
+		scene.add(luzPuntual);
+
+		//luz focal (color, intensidad)
+		var luzFocal = new THREE.SpotLight(0xFFFFFF, 0.8, );
+		//Posición
+		luzFocal.position.set( -200, 400, 0);
+		//Dirección
+		luzFocal.target.position.set(0,0,0);
+		luzFocal.angle = Math.PI / 5;
+		luzFocal.penumbra = 0.6;
+		luzFocal.castShadow = true;
+		luzFocal.shadow.camera.near = 0.1;
+		luzFocal.shadow.camera.far = 1000;
+		luzFocal.shadow.camera.fov = 36;
+		scene.add(luzFocal);
+
+
 
 
   window.addEventListener('resize', updateAspectRatio);
@@ -156,9 +167,9 @@ function loadScene() {
 
 	var tex = loader.load('images/edificios/asfalto.jpg' , function(texture)
 				{
-				 var fondo = new THREE.MeshBasicMaterial({ map:texture });
+ 				 var fondo = new THREE.MeshBasicMaterial({ map:texture });
 				 var suelo = new THREE.PlaneGeometry(384,384,10,10);
-	 				asfalto = new THREE.Mesh(suelo, fondo);
+	 				asfalto = new THREE.Mesh(suelo, material);
 					asfalto.receiveShadow = true;
 					asfalto.castShadow = true;
 					asfalto.rotation.x = -Math.PI / 2;
@@ -170,7 +181,7 @@ function loadScene() {
 
 		tex.wrapS = THREE.RepeatWrapping;
 		tex.wrapT = THREE.RepeatWrapping;
-		tex.repeat.set( 90, 90 );
+		tex.repeat.set( 110, 110 );
 
 }
 
