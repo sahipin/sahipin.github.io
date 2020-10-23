@@ -107,8 +107,8 @@ function init() {
 		scene.add(luzFocal);
 
 
-		var spotLightHelper = new THREE.SpotLightHelper( luzFocal );
-		scene.add( spotLightHelper );
+		//var spotLightHelper = new THREE.SpotLightHelper( luzFocal );
+		//scene.add( spotLightHelper );
 
 
 
@@ -350,7 +350,7 @@ function updateAspectRatio(){
 function setupGui() {
 	// Definicion de los controles
 	effectController = {
-		time: 0,
+		time: 1,
 		separation: 1,
 		height: 20,
 	};
