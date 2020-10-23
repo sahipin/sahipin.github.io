@@ -411,7 +411,6 @@ function setupGui() {
 }
 
 function set_city_backGround(fondo, tex){
-	fondo.side = THREE.DoubleSide;
 	var back = new THREE.PlaneGeometry(384,185,10,10);
 	backX = new THREE.Mesh(back, fondo);
   backZ = new THREE.Mesh(back, fondo);
