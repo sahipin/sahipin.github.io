@@ -160,12 +160,13 @@ function loadScene() {
   scene.add( new THREE.AxisHelper(30) );
 
 	const loader = new THREE.TextureLoader();
-	loader.load('images/edificios/day.jpg' , function(texture)
+	var fondo;
+	var day_tex = loader.load('images/edificios/day.jpg' , function(texture)
 				{
-				 var fondo = new THREE.MeshBasicMaterial({ map:texture });
-				 set_city_backGround(fondo);
+				 fondo = new THREE.MeshBasicMaterial({ map:texture });
 				});
 
+  set_city_backGround(fondo, day_tex);
 	var tex = loader.load('images/edificios/asfalto.jpg' , function(texture)
 				{
  				 var fondo = new THREE.MeshLambertMaterial({ map:texture });
@@ -409,6 +410,7 @@ function setupGui() {
 function set_city_backGround(fondo, tex){
 	var back = new THREE.PlaneGeometry(384,185,10,10);
 	backX = new THREE.Mesh(back, fondo);
+	tex.wrapS = THREE.RepeatWrapping;
 	tex.repeat.set(-1);
   backZ = new THREE.Mesh(back, fondo);
   backX.rotation.y = Math.PI / 2;
