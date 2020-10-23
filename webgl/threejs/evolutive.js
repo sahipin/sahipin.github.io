@@ -89,6 +89,7 @@ function init() {
 		//Luces
 		//Luz ambiental (color, intensidad)
 		var luzAmbiente = new THREE.AmbientLight(0xFFFFFF,0.8);
+		luzAmbiente.intensity = 0.2;
 		scene.add(luzAmbiente);
 
 		//luz focal (color, intensidad)
@@ -169,7 +170,7 @@ function loadScene() {
 				{
  				 var fondo = new THREE.MeshLambertMaterial({ map:texture });
 				 var suelo = new THREE.PlaneGeometry(384,384,10,10);
-	 				asfalto = new THREE.Mesh(suelo, material);
+	 				asfalto = new THREE.Mesh(suelo, fondo);
 					asfalto.receiveShadow = true;
 					asfalto.castShadow = true;
 					asfalto.rotation.x = -Math.PI / 2;
