@@ -365,35 +365,33 @@ function setupGui() {
 	var heightConf = h.add(effectController, "height", 20, 100, 5).name("Altura edificios");
 	hour.onChange(function(time){
 		const loader = new THREE.TextureLoader();
+		var fondo;
 		if (time == 0){
 			luzAmbiente.intensity = 0.6;
 			luzFocal.position.set( 400, 200, 200);
-			loader.load('images/edificios/morning.jpg' , function(texture)
+			var morning_tex = loader.load('images/edificios/morning.jpg' , function(texture)
 						{
-							var fondo = new THREE.MeshBasicMaterial({ map:texture });
-							set_city_backGround(fondo);
-						});
-
-
+							fondo = new THREE.MeshBasicMaterial({ map:texture });
+						})
+			set_city_backGround(fondo, morning_tex);
 		}
 	  else if (time == 1){
 			luzAmbiente.intensity = 1;
 			luzFocal.position.set( 400, 400, 400);
-			loader.load('images/edificios/day.jpg' , function(texture)
+			var day_tex = loader.load('images/edificios/day.jpg' , function(texture)
 						{
-							var fondo = new THREE.MeshBasicMaterial({ map:texture });
- 						  set_city_backGround(fondo);
+							fondo = new THREE.MeshBasicMaterial({ map:texture });
 						});
+			set_city_backGround(fondo, day_tex);
 		}
 		else{
 			luzAmbiente.intensity = 0.2;
 			luzFocal.position.set( 200, 200, 400);
-			loader.load('images/edificios/night.jpg' , function(texture)
+			var night_text = loader.load('images/edificios/night.jpg' , function(texture)
 						{
-							var fondo = new THREE.MeshBasicMaterial({ map:texture });
-							set_city_backGround(fondo);
+							fondo = new THREE.MeshBasicMaterial({ map:texture });
 						});
-
+			set_city_backGround(fondo, night_text);
 		}
 	});
 	separationDist.onChange(function(distance){
@@ -408,11 +406,11 @@ function setupGui() {
 	});
 }
 
-function set_city_backGround(fondo){
+function set_city_backGround(fondo, tex){
 	var back = new THREE.PlaneGeometry(384,185,10,10);
 	backX = new THREE.Mesh(back, fondo);
-	fondo.wrapS = THREE.RepeatWrapping;
-  fondo.repeat.set(-1);
+	tex.wrapS = THREE.RepeatWrapping;
+  tex.repeat.set(-1);
   backZ = new THREE.Mesh(back, fondo);
   backX.rotation.y = Math.PI / 2;
   backX.position.y = 50;
