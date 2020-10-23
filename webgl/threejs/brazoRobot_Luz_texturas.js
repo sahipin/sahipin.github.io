@@ -1,5 +1,5 @@
 /**
- * Seminario GPC 2. FormaBasica
+ * Seminario GPC 5. Luces y texturas
  *
  * Dibujar formas basicas con animación
  */
@@ -57,6 +57,8 @@ function init() {
   renderer.setClearColor( new THREE.Color(0x000011) );
   document.getElementById("container").appendChild(renderer.domElement);
   renderer.autoClear = false;
+	//Activar el calculo de sombras
+	renderer.shadowMap.enabled = true;
   // Escena
   scene = new THREE.Scene();
 
@@ -95,6 +97,7 @@ function init() {
 	luzFocal.shadow.camera.near = 0.1;
 	luzFocal.shadow.camera.far = 1000;
 	luzFocal.shadow.camera.fov = 36;
+	scene.add(luzFocal);
 
 
   window.addEventListener('resize', updateAspectRatio);
