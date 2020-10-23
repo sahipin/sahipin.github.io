@@ -88,8 +88,8 @@ function init() {
 
 		//Luces
 		//Luz ambiental (color, intensidad)
-		//var luzAmbiente = new THREE.AmbientLight(0xFFFFFF,0.8);
-		//scene.add(luzAmbiente);
+		var luzAmbiente = new THREE.AmbientLight(0xFFFFFF,0.8);
+		scene.add(luzAmbiente);
 
 		//luz focal (color, intensidad)
 		var luzFocal = new THREE.SpotLight(0xFFFFFF, 0.8, );
