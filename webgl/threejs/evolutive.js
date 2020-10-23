@@ -82,15 +82,28 @@ function init() {
   cameraController.target.set(0,0,0);
   cameraController.noKeys = true;
 
+	//luz focal (color, intensidad)
+	var luzFocal = new THREE.SpotLight(0xFFFFFF, 0.1, );
+	//Posición
+	luzFocal.position.set( -200, 400, 0);
+	//Dirección
+	luzFocal.target.position.set(0,0,0);
+	//Angulo cutoff en radianes
+	luzFocal.angle = Math.PI / 5;
+	//Penumbra hace antialisaing
+	luzFocal.penumbra = 0.6;
+	luzFocal.castShadow = true;
+	//Arreglar problema sombras chungas
+	luzFocal.shadow.camera.near = 0.1;
+	luzFocal.shadow.camera.far = 1000;
+	luzFocal.shadow.camera.fov = 36;
+	scene.add(luzFocal);
+
 
   window.addEventListener('resize', updateAspectRatio);
 
 	const loader = new THREE.TextureLoader();
-	/*loader.load('images/edificios/puente.jpg' , function(texture)
-	            {
-	             scene.background = texture;
-	            });
-	*/
+
 	texE = loader.load('images/edificios/escuela.jpg' , function(texture)
 		{
 		 materialE = new THREE.MeshBasicMaterial({ map:texture });
@@ -146,6 +159,8 @@ function loadScene() {
 				 var fondo = new THREE.MeshBasicMaterial({ map:texture });
 				 var suelo = new THREE.PlaneGeometry(384,384,10,10);
 	 				asfalto = new THREE.Mesh(suelo, fondo);
+					asfalto.receiveShadow = true;
+					asfalto.castShadow = true;
 					asfalto.rotation.x = -Math.PI / 2;
 					asfalto.position.x = 192;
 					asfalto.position.z = 192;
@@ -184,7 +199,7 @@ function generaCiudad() {
 		return;
 	}
 	if(!personalCamera){
-		//setPersonalCamera ();
+		setPersonalCamera ();
 	}
 	console.log("generating");
 	loading_city = 1;
@@ -243,6 +258,8 @@ function generaCiudad() {
     building.position.x = separation_dist * tokens[0]*1+tokens[3]/2+0.5;
     building.position.z = separation_dist * tokens[1]*1+tokens[4]/2+0.5;
     building.position.y = height/2;
+		building.receiveShadow = true;
+		building.castShadow = true;
 
     city.add(building);
   }

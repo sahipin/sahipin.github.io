@@ -211,32 +211,39 @@ function loadScene() {
 	var floor = new THREE.Mesh(planeGeom, floor_material);
   floor.rotation.x = -Math.PI / 2;
 	floor.receiveShadow = true;
+	floor.castShadow = true;
 
 	robot = new THREE.Object3D();
 	robot.position.y = 10;
 
 	base = new THREE.Mesh(cilindro_base, metal_material_no_bright);
 	base.receiveShadow = true;
+	base..castShadow = true;
 	brazo = new THREE.Object3D();
 
 	var eje = new THREE.Mesh(cubo_eje, metal_material_no_bright);
 	eje.position.y = 60;
 	eje.receiveShadow = true;
+	eje.castShadow = true;
 	var esparrago = new THREE.Mesh(cilindro_esparrago,metal_material_no_bright);
 	esparrago.rotation.x = Math.PI / 2;
 	esparrago.receiveShadow = true;
+	esparrago.castShadow = true;
 	var rotula = new THREE.Mesh(esfera_rotula,rotula_material);
 	rotula.position.y = 120;
 	rotula.receiveShadow = true;
+	rotula.castShadow = true;
 	ante_brazo = new THREE.Object3D();
 	ante_brazo.position.y = 120;
   var disco = new THREE.Mesh(cilindro_disco,wood_material_no_bright);
   disco.receiveShadow = true;
+	disco.castShadow = true;
 	// nervios
 	for ( i = -1; i < 2; i+=2){
 		for ( j = -1; j < 2; j+=2){
 			var nervio = new THREE.Mesh(cubo_nervio, wood_material_no_bright);
 			nervio.receiveShadow = true;
+			nervio.castShadow = true;
 			nervio.position.y = 40;
 			nervio.position.x = 12 * (i);
 			nervio.position.z = 12 * (j);
@@ -246,6 +253,7 @@ function loadScene() {
 
 	var mano = new THREE.Mesh(cilindro_mano,wood_material_no_bright);
 	mano.receiveShadow = true;
+	mano.castShadow = true;
 	mano.position.y = 80;
 	mano.rotation.x = Math.PI/2;
 	pinzas = new THREE.Object3D();
@@ -253,10 +261,12 @@ function loadScene() {
 	pinzas.rotation.x = Math.PI / 2;
 	pinza_izq = new THREE.Mesh(pinza, material);
 	pinza_izq.receiveShadow = true;
+	pinza_izq.castShadow = true;
 	pinza_izq.position.z = 14;
 	pinza_izq.position.y = -10;
 	pinza_der = new THREE.Mesh(pinza,material);
 	pinza_der.receiveShadow = true;
+	pinza_der.castShadow = true;
 	pinza_der.position.z = -10;
 	pinza_der.position.y = -10;
 
