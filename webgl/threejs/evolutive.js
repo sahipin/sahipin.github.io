@@ -9,6 +9,7 @@
 var renderer, scene, camera, cenital, personalCamera;
 var materialE,materialG,materialF,materialR,materialS,materialH,material_default;
 var texE,texG,texF,texR,texS,texH,tex_default;
+var luzAmbiente, luzFocal;
 // Variables globales
 var city, angulo = 0, material;
 var r = t = 40;
@@ -88,11 +89,11 @@ function init() {
 
 		//Luces
 		//Luz ambiental (color, intensidad)
-		var luzAmbiente = new THREE.AmbientLight(0xFFFFFF, 1);
+		luzAmbiente = new THREE.AmbientLight(0xFFFFFF, 1);
 		scene.add(luzAmbiente);
 
 		//luz focal (color, intensidad)
-		var luzFocal = new THREE.SpotLight(0xFFFFFF, 0.8, );
+		luzFocal = new THREE.SpotLight(0xFFFFFF, 0.8, );
 		//Posición
 		luzFocal.position.set( 400, 400, 400);
 		//Dirección
