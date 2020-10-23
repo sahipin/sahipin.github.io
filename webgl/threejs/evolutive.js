@@ -370,7 +370,7 @@ function setupGui() {
 			luzFocal.position.set( 400, 200, 200);
 			loader.load('images/edificios/morning.jpg' , function(texture)
 						{
-							varfondo = new THREE.MeshBasicMaterial({ map:texture });
+							var fondo = new THREE.MeshBasicMaterial({ map:texture });
 							set_city_backGround(fondo);
 						});
 
