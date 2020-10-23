@@ -366,7 +366,6 @@ function setupGui() {
 		const loader = new THREE.TextureLoader();
 		if (time == 0){
 			luzAmbiente.intensity = 0.6;
-			luzFocal.color = 0x00ffff;
 			luzFocal.position.set( 400, 200, 200);
 			loader.load('images/edificios/morning.jpg' , function(texture)
 						{
@@ -376,7 +375,6 @@ function setupGui() {
 		}
 	  else if (time == 1){
 			luzAmbiente.intensity = 1;
-			luzFocal.color = 0xffffff;
 			luzFocal.position.set( 400, 400, 400);
 			loader.load('images/edificios/day.jpg' , function(texture)
 						{
@@ -386,7 +384,6 @@ function setupGui() {
 		}
 		else{
 			luzAmbiente.intensity = 0.2;
-			luzFocal.color = 0x555555;
 			luzFocal.position.set( 200, 200, 400);
 			loader.load('images/edificios/night.jpg' , function(texture)
 						{
