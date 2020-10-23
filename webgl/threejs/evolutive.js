@@ -88,14 +88,13 @@ function init() {
 
 		//Luces
 		//Luz ambiental (color, intensidad)
-		var luzAmbiente = new THREE.AmbientLight(0xFFFFFF,0.8);
-		luzAmbiente.intensity = 0.2;
+		var luzAmbiente = new THREE.AmbientLight(0xFFFFFF, 1);
 		scene.add(luzAmbiente);
 
 		//luz focal (color, intensidad)
 		var luzFocal = new THREE.SpotLight(0xFFFFFF, 0.8, );
 		//Posición
-		luzFocal.position.set( 200, 200, 200);
+		luzFocal.position.set( 400, 400, 400);
 		//Dirección
 		luzFocal.target.position.set(0,0,0);
 		luzFocal.angle = Math.PI / 5;
@@ -160,7 +159,7 @@ function loadScene() {
   scene.add( new THREE.AxisHelper(30) );
 
 	const loader = new THREE.TextureLoader();
-	loader.load('images/edificios/morning.jpg' , function(texture)
+	loader.load('images/edificios/day.jpg' , function(texture)
 				{
 				 var fondo = new THREE.MeshBasicMaterial({ map:texture });
 				 set_city_backGround(fondo);
@@ -361,33 +360,36 @@ function setupGui() {
 	// Construccion del menu
 	var h = gui.addFolder("Control ciudad");
 	var hour = h.add(effectController, "time", 0, 2, 1).name("Hora");
-	var separationDist = h.add(effectController, "separation", 1, 4, 1).name("Separación edificios");
+	var separationDist = h.add(effectController, "separation", 1, 3, 1).name("Separación edificios");
 	var heightConf = h.add(effectController, "height", 20, 100, 5).name("Altura edificios");
 	hour.onChange(function(time){
 		const loader = new THREE.TextureLoader();
 		if (time == 0){
-			var fondo;
+			luzAmbiente.intensity = 0.6;
+			luzFocal.position.set( 400, 200, 200);
 			loader.load('images/edificios/morning.jpg' , function(texture)
 						{
-							fondo = new THREE.MeshBasicMaterial({ map:texture });
+							varfondo = new THREE.MeshBasicMaterial({ map:texture });
 							set_city_backGround(fondo);
 						});
 
 
 		}
 	  else if (time == 1){
-			var fondo;
+			luzAmbiente.intensity = 1;
+			luzFocal.position.set( 400, 400, 400);
 			loader.load('images/edificios/day.jpg' , function(texture)
 						{
-							fondo = new THREE.MeshBasicMaterial({ map:texture });
+							var fondo = new THREE.MeshBasicMaterial({ map:texture });
  						  set_city_backGround(fondo);
 						});
 		}
 		else{
-			var fondo;
+			luzAmbiente.intensity = 0.2;
+			luzFocal.position.set( 200, 200, 400);
 			loader.load('images/edificios/night.jpg' , function(texture)
 						{
-							fondo = new THREE.MeshBasicMaterial({ map:texture });
+							var fondo = new THREE.MeshBasicMaterial({ map:texture });
 							set_city_backGround(fondo);
 						});
 
