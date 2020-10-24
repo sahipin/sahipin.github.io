@@ -235,8 +235,8 @@ function init() {
 		luzFocalBall.shadow.camera.far = 20;
 		luzFocalBall.shadow.camera.fov = 2;
 
-		var spotLightHelper = new THREE.SpotLightHelper( luzFocalBall , 'black');
-		scene.add( spotLightHelper );
+		//var spotLightHelper = new THREE.SpotLightHelper( luzFocalBall , 'black');
+		//scene.add( spotLightHelper );
 
 		//luz focal (color, intensidad)
 		luzFocal = new THREE.SpotLight(0xFFFFFF, 0.8, );
@@ -244,7 +244,7 @@ function init() {
 		luzFocal.position.set( 400, 400, 400);
 		//Dirección
 		luzFocal.target.position.set(0,0,0);
-		luzFocal.angle = Math.PI / 5;
+		luzFocal.angle = Math.PI / 6;
 		luzFocal.penumbra = 0.6;
 		luzFocal.castShadow = true;
 		luzFocal.shadow.camera.near = 0.1;
