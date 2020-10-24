@@ -180,6 +180,7 @@ function init() {
   //controlador de camara
   cameraController = new THREE.OrbitControls( camera, renderer.domElement);
   cameraController.target.set(0,0,0);
+  cameraController.noKeys = true;
 
 	//Activar el calculo de sombras
 	renderer.shadowMap.enabled = true;
@@ -246,11 +247,9 @@ function init() {
 
 	  window.addEventListener('keydown', function(e) {
 	    pressed[e.key.toUpperCase()] = true;
-			console.log("pressed");
 	  })
 	  window.addEventListener('keyup', function(e) {
 	    pressed[e.key.toUpperCase()] = false;
-			console.log("des pressed");
 	  })
 
 }
