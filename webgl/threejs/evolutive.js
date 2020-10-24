@@ -236,7 +236,7 @@ function init() {
 		luzFocal.penumbra = 0.6;
 		luzFocal.castShadow = true;
 		luzFocal.shadow.camera.near = 0.1;
-		luzFocal.shadow.camera.far = 1000;
+		luzFocal.shadow.camera.far = 10;
 		luzFocal.shadow.camera.fov = 36;
 		scene.add(luzFocal);
 
