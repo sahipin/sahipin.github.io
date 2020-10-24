@@ -226,6 +226,19 @@ function init() {
 		luzFocalBall = new THREE.SpotLight(0xFFFFFF, 0.8, );
 		scene.add(luzFocalBall);
 
+
+
+		luzFocalBall.angle = Math.PI / 8;
+		luzFocalBall.distance = 15;
+		luzFocalBall.penumbra = 1;
+		luzFocalBall.castShadow = true;
+		luzFocalBall.shadow.camera.near = 0.10;
+		luzFocalBall.shadow.camera.far = 0.01;
+		luzFocalBall.shadow.camera.fov = 36;
+
+		var spotLightHelper = new THREE.SpotLightHelper( luzFocalBall , 'black');
+		scene.add( spotLightHelper );
+
 		//luz focal (color, intensidad)
 		luzFocal = new THREE.SpotLight(0xFFFFFF, 0.8, );
 		//Posición
@@ -355,17 +368,8 @@ function moveSphere() {
     sphereBody.velocity.x += moveDistance;
   }
 
-	luzFocalBall.position.set(sphereBody.position.x, sphereBody.position.y+2, sphereBody.position.z);
-
-	luzFocalBall.target.position.set(sphereBody.position.x,0,sphereBody.position.z - 10);
-
-
-	luzFocal.angle = Math.PI / 10;
-	luzFocalBall.penumbra = 1;
-	luzFocalBall.castShadow = true;
-	luzFocalBall.shadow.camera.near = 0.1;
-	luzFocalBall.shadow.camera.far = 10;
-	luzFocalBall.shadow.camera.fov = 36;
+	luzFocalBall.position.set(sphereBody.position.x, sphereBody.position.y+0.2, sphereBody.position.z);
+	luzFocalBall.rotation.x = Math.PI / 2;
 
 }
 
