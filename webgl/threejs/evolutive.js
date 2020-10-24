@@ -134,9 +134,6 @@ function addFloorPhysics() {
 
 	limites.push(plane);
 
-
-
-
 	var pared = new THREE.PlaneGeometry(384,185,10,10);
 	backX = new THREE.Mesh(pared, material);
 	backZ = new THREE.Mesh(pared, material);
@@ -460,11 +457,14 @@ function generaCiudad() {
 	buildings.map(function(building) {
 		var q = building.quaternion;
 		buildingBody = new CANNON.Body({
-			mass: 0, // mass = 0 makes the body static
-			material: physicsMaterial,
-			shape: new CANNON.Plane(),
-			quaternion: new CANNON.Quaternion(-q._x, q._y, q._z, q._w)
-		});
+	    mass: 1,
+	    material: physicsMaterial,
+	    shape: new CANNON.Sphere(1),
+	    linearDamping: 0.5,
+	    position: new CANNON.Vec3(buildingShape.position.x, buildingShape.position.y, buildingShape.position.z)
+	  });
+
+
 		world.addBody(buildingBody);
 	})
 
