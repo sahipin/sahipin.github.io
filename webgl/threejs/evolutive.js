@@ -56,8 +56,8 @@ function setCameras(ar ){
 	//ortográfica
 	var camOrtografica = new THREE.OrthographicCamera(l, r, t, b, -200, 200);
 	cenital = camOrtografica.clone();
-	cenital.position.set(0,130,0);
-	cenital.lookAt(origen);
+	cenital.position.set(100,130,100);
+	cenital.lookAt(new THREE.Vector3(100,0,100));
 	cenital.up = new THREE.Vector3(0,0,-1);
 
 	//perspectiva
@@ -94,7 +94,7 @@ function getPhysicsMaterial() {
 }
 
 function getSphere(scene) {
-	var geometry = new THREE.SphereGeometry( 1, 12, 9 );
+	var geometry = new THREE.SphereGeometry( 1, 100, 100 );
   var material = new THREE.MeshPhongMaterial({
     color: 0xd0901d,
     emissive: 0xaa0000,
@@ -378,7 +378,7 @@ function moveSphere() {
 function moveCamera() {
 	if(personalCamera){
 	  personalCamera.position.x = sphereBody.position.x + 0;
-	  personalCamera.position.y = sphereBody.position.y + 3;
+	  personalCamera.position.y = sphereBody.position.y + 2;
 	  personalCamera.position.z = sphereBody.position.z + 6;
 	  personalCamera.lookAt(sphereGroup.position);
 	}
