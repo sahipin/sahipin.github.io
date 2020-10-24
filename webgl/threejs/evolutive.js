@@ -7,9 +7,10 @@
 // Variables globales imprescindibles
 // motor render (dibujar), estructura datos almacen dibujos, desde donde dibujamos
 var renderer, scene, camera, cenital, personalCamera;
-var materialE,materialG,materialF,materialR,materialS,materialH,material_default, mat_asfalto;
+var materialE,materialG,materialF,materialR,materialS,materialH,material_default;
 var texE,texG,texF,texR,texS,texH,tex_default;
 var luzAmbiente, luzFocal;
+var asfalto;
 
 var pressed = {};
 var clock = new THREE.Clock();
@@ -104,7 +105,7 @@ function getSphere(scene) {
 
 
 function addFloorPhysics() {
-  var q = mat_asfalto.quaternion;
+  var q = asfalto.quaternion;
   floorBody = new CANNON.Body({
     mass: 0, // mass = 0 makes the body static
     material: physicsMaterial,
@@ -243,7 +244,7 @@ function loadScene() {
 				});
 	var tex = loader.load('images/edificios/asfalto.jpg' , function(texture)
 				{
- 				 mat_asfalto = new THREE.MeshLambertMaterial({ map:texture });
+ 				 var mat_asfalto = new THREE.MeshLambertMaterial({ map:texture });
 				 var suelo = new THREE.PlaneGeometry(384,384,10,10);
 	 				asfalto = new THREE.Mesh(suelo, mat_asfalto);
 					asfalto.receiveShadow = true;
