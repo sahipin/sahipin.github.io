@@ -3,7 +3,7 @@
  *
  * Dibujar formas basicas con animación
  */
-
+//kk
 // Variables globales imprescindibles
 // motor render (dibujar), estructura datos almacen dibujos, desde donde dibujamos
 var renderer, scene, camera, cenital, personalCamera;
@@ -222,7 +222,7 @@ function init() {
 		luzAmbiente = new THREE.AmbientLight(0xFFFFFF, 1);
 		scene.add(luzAmbiente);
 
-		//Luz puntual (color, intensidad)
+		//Luz focal desde la pelota (color, intensidad)
 		luzFocalBall = new THREE.SpotLight(0xFFFFFF, 0.8, );
 		scene.add(luzFocalBall);
 
@@ -358,8 +358,9 @@ function moveSphere() {
 	luzFocalBall.position.set(sphereBody.position.x, sphereBody.position.y, sphereBody.position.z);
 
 	luzFocalBall.target.position.set(sphereBody.position.x,0,0);
+
 	luzFocalBall.angle = Math.PI / 5;
-	luzFocalBall.penumbra = 0.6;
+	luzFocalBall.penumbra = 0.1;
 	luzFocalBall.castShadow = true;
 	luzFocalBall.shadow.camera.near = 0.1;
 	luzFocalBall.shadow.camera.far = 1000;
