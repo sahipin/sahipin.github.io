@@ -228,13 +228,13 @@ function init() {
 
 
 
-		luzFocalBall.angle = Math.PI / 4;
+		luzFocalBall.angle = Math.PI / 6;
 		luzFocalBall.distance = 15;
 		luzFocalBall.penumbra = 0;
 		luzFocalBall.castShadow = true;
 		luzFocalBall.shadow.camera.near = 0.010;
 		luzFocalBall.shadow.camera.far = 100;
-		luzFocalBall.shadow.camera.fov = 36;
+		luzFocalBall.shadow.camera.fov = 36000;
 
 		var spotLightHelper = new THREE.SpotLightHelper( luzFocalBall , 'black');
 		scene.add( spotLightHelper );
