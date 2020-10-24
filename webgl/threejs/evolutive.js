@@ -223,7 +223,7 @@ function init() {
 		scene.add(luzAmbiente);
 
 		//Luz focal desde la pelota (color, intensidad)
-		luzFocalBall = new THREE.SpotLight(0xFFFFFF, 5, );
+		luzFocalBall = new THREE.SpotLight(0xFFFFFF, 2, );
 		scene.add(luzFocalBall);
 
 
@@ -232,7 +232,7 @@ function init() {
 		luzFocalBall.distance = 7;
 		luzFocalBall.castShadow = true;
 		luzFocalBall.shadow.camera.near = 0;
-		luzFocalBall.shadow.camera.far = 100;
+		luzFocalBall.shadow.camera.far = 20;
 		luzFocalBall.shadow.camera.fov = 2;
 
 		var spotLightHelper = new THREE.SpotLightHelper( luzFocalBall , 'black');
@@ -597,7 +597,6 @@ function setupGui() {
 		const loader = new THREE.TextureLoader();
 		if (time == 0){
 			luzAmbiente.intensity = 0.6;
-		  luzFocal.intensity = 0.6;
 			luzFocal.position.set( 400, 200, 200);
 			loader.load('images/edificios/morning.jpg' , function(texture)
 						{
@@ -607,7 +606,6 @@ function setupGui() {
 		}
 	  else if (time == 1){
 			luzAmbiente.intensity = 1;
-		  luzFocal.intensity = 1;
 			luzFocal.position.set( 400, 400, 400);
 			loader.load('images/edificios/day.jpg' , function(texture)
 						{
@@ -616,8 +614,7 @@ function setupGui() {
 						});
 		}
 		else{
-			luzAmbiente.intensity = 0.05;
-			luzFocal.intensity = 0.05;
+			luzAmbiente.intensity = 0.2;
 			luzFocal.position.set( 200, 200, 400);
 			loader.load('images/edificios/night.jpg' , function(texture)
 						{
