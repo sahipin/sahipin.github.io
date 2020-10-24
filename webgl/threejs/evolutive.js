@@ -9,7 +9,7 @@
 var renderer, scene, camera, cenital, personalCamera;
 var materialE,materialG,materialF,materialR,materialS,materialH,material_default;
 var texE,texG,texF,texR,texS,texH,tex_default;
-var luzAmbiente, luzFocal, luzPuntual;
+var luzAmbiente, luzFocal, luzFocalBall;
 var asfalto;
 
 var pressed = {};
@@ -126,7 +126,7 @@ function addFloorPhysics() {
 		var plane = new THREE.Mesh(geometry, material);
 		plane.position.x = 1000;
 		plane.position.z = 1000;
-		plane.position.y = -1;
+		plane.position.y = -0.2;
 		plane.rotation.x = Math.PI / 2;
 		plane.receiveShadow = true;
 		plane.castShadow = true;
@@ -223,8 +223,8 @@ function init() {
 		scene.add(luzAmbiente);
 
 		//Luz puntual (color, intensidad)
-		luzPuntual = new THREE.PointLight(0xBBBB00,0.4);
-		scene.add(luzPuntual);
+		luzFocalBall = new THREE.SpotLight(0xFFFFFF, 0.8, );
+		scene.add(luzFocalBall);
 
 		//luz focal (color, intensidad)
 		luzFocal = new THREE.SpotLight(0xFFFFFF, 0.8, );
@@ -355,7 +355,15 @@ function moveSphere() {
     sphereBody.velocity.x += moveDistance;
   }
 
-	luzPuntual.position.set(sphereBody.position.x, sphereBody.position.y, sphereBody.position.z);
+	luzFocalBall.position.set(sphereBody.position.x, sphereBody.position.y, sphereBody.position.z);
+
+	luzFocalBall.target.position.set(sphereBody.position.x,0,0);
+	luzFocalBall.angle = Math.PI / 5;
+	luzFocalBall.penumbra = 0.6;
+	luzFocalBall.castShadow = true;
+	luzFocalBall.shadow.camera.near = 0.1;
+	luzFocalBall.shadow.camera.far = 1000;
+	luzFocalBall.shadow.camera.fov = 36;
 
 }
 
