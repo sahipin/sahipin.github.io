@@ -28,12 +28,21 @@ var notified = 0;
 var loading_city = 0;
 // Acciones
 init();
-var world = getPhysics();
 loadScene();
 setupGui();
 
+var world = getPhysics();
 var physicsMaterial = getPhysicsMaterial();
-var sphereData,sphere,sphereGroup, sphereBody;
+var sphereBody, floorBody;
+
+
+var sphereData = getSphere(scene);
+var sphere = sphereData[0];
+var sphereGroup = sphereData[1];
+addSpherePhysics();
+
+addFloorPhysics();
+
 
 render();
 
@@ -59,19 +68,19 @@ function setCameras(ar ){
 }
 
 function getPhysics() {
-  world = new CANNON.World();
-  world.gravity.set(0, -400, 0); // earth = -9.82 m/s
-  world.broadphase = new CANNON.NaiveBroadphase();
-  world.broadphase.useBoundingBoxes = true;
-  var solver = new CANNON.GSSolver();
-  solver.iterations = 7;
-  solver.tolerance = 0.1;
-  world.solver = solver;
-  world.quatNormalizeSkip = 0;
-  world.quatNormalizeFast = false;
-  world.defaultContactMaterial.contactEquationStiffness = 1e9;
-  world.defaultContactMaterial.contactEquationRelaxation = 4;
-  return world;
+	world = new CANNON.World();
+	world.gravity.set(0, -400, 0); // earth = -9.82 m/s
+	world.broadphase = new CANNON.NaiveBroadphase();
+	world.broadphase.useBoundingBoxes = true;
+	var solver = new CANNON.GSSolver();
+	solver.iterations = 7;
+	solver.tolerance = 0.1;
+	world.solver = solver;
+	world.quatNormalizeSkip = 0;
+	world.quatNormalizeFast = false;
+	world.defaultContactMaterial.contactEquationStiffness = 1e9;
+	world.defaultContactMaterial.contactEquationRelaxation = 4;
+	return world;
 }
 
 function getPhysicsMaterial() {
@@ -83,7 +92,7 @@ function getPhysicsMaterial() {
 }
 
 function getSphere(scene) {
-  var geometry = new THREE.SphereGeometry( 30, 12, 9 );
+	var geometry = new THREE.SphereGeometry( 6, 12, 9 );
   var material = new THREE.MeshPhongMaterial({
     color: 0xd0901d,
     emissive: 0xaa0000,
@@ -105,7 +114,19 @@ function getSphere(scene) {
 
 
 function addFloorPhysics() {
-  var q = asfalto.quaternion;
+
+	var material = new THREE.MeshBasicMaterial({ color: '', wireframe: false });
+		var geometry = new THREE.PlaneGeometry(2000, 2000);
+		var plane = new THREE.Mesh(geometry, material);
+		plane.position.x = 1000;
+		plane.position.z = 1000;
+		plane.position.y = -3;
+		plane.rotation.x = Math.PI / 2;
+		plane.receiveShadow = true;
+		plane.castShadow = true;
+		scene.add(plane);
+
+  var q = plane.quaternion;
   floorBody = new CANNON.Body({
     mass: 0, // mass = 0 makes the body static
     material: physicsMaterial,
@@ -119,9 +140,9 @@ function addSpherePhysics() {
   sphereBody = new CANNON.Body({
     mass: 1,
     material: physicsMaterial,
-    shape: new CANNON.Sphere(30),
+    shape: new CANNON.Sphere(3),
     linearDamping: 0.5,
-    position: new CANNON.Vec3(10, 1000, 20)
+    position: new CANNON.Vec3(10, 20, 100)
   });
   world.addBody(sphereBody);
 }
@@ -145,6 +166,7 @@ function init() {
   renderer.setClearColor( new THREE.Color(0x777777) );
   document.getElementById("container").appendChild(renderer.domElement);
   renderer.autoClear = false;
+  renderer.setPixelRatio(window.devicePixelRatio);
   // Escena
   scene = new THREE.Scene();
 
@@ -158,7 +180,6 @@ function init() {
   //controlador de camara
   cameraController = new THREE.OrbitControls( camera, renderer.domElement);
   cameraController.target.set(0,0,0);
-  cameraController.noKeys = true;
 
 	//Activar el calculo de sombras
 	renderer.shadowMap.enabled = true;
@@ -222,6 +243,16 @@ function init() {
 		material_default = new THREE.MeshLambertMaterial({ map:texture});
 		});
 
+
+	  window.addEventListener('keydown', function(e) {
+	    pressed[e.key.toUpperCase()] = true;
+			console.log("pressed");
+	  })
+	  window.addEventListener('keyup', function(e) {
+	    pressed[e.key.toUpperCase()] = false;
+			console.log("des pressed");
+	  })
+
 }
 
 function loadScene() {
@@ -244,21 +275,17 @@ function loadScene() {
 				});
 	var tex = loader.load('images/edificios/asfalto.jpg' , function(texture)
 				{
- 				 var mat_asfalto = new THREE.MeshLambertMaterial({ map:texture });
-				 var suelo = new THREE.PlaneGeometry(384,384,10,10);
-	 				asfalto = new THREE.Mesh(suelo, mat_asfalto);
+ 				 	var mat_asfalto = new THREE.MeshLambertMaterial({ map:texture });
+
+					var suelo = new THREE.PlaneGeometry(384,384,10,10);
+					asfalto = new THREE.Mesh(suelo, mat_asfalto);
 					asfalto.receiveShadow = true;
 					asfalto.castShadow = true;
 					asfalto.rotation.x = -Math.PI / 2;
 					asfalto.position.x = 192;
 					asfalto.position.z = 192;
 
-	 				scene.add(asfalto);
-					addFloorPhysics();
-					sphereData = getSphere(scene);
-					sphere = sphereData[0];
-					sphereGroup = sphereData[1];
-					addSpherePhysics();
+					scene.add(asfalto);
 				});
 
 		tex.wrapS = THREE.RepeatWrapping;
@@ -275,15 +302,13 @@ function update(){
 }
 
 function moveSphere() {
-	if(!sphereBody){
-		return;
-	}
   var delta = clock.getDelta(); // seconds
-  var moveDistance = 1 * delta; // n pixels per second
+  var moveDistance = 500 * delta; // n pixels per second
   var rotateAngle = Math.PI / 2 * delta; // 90 deg per second
 
   // move forwards, backwards, left, or right
   if (pressed['W'] || pressed['ARROWUP']) {
+		  console.log(moveDistance);
     sphereBody.velocity.z += moveDistance;
   }
   if (pressed['S'] || pressed['ARROWDOWN']) {
@@ -386,10 +411,9 @@ function generaCiudad() {
 
 function updatePhysics() {
   world.step(1/60);
-	if(sphereBody){
-	  sphereGroup.position.copy(sphereBody.position);
-	  sphereGroup.quaternion.copy(sphereBody.quaternion);
-	}
+  sphereGroup.position.copy(sphereBody.position);
+  sphereGroup.quaternion.copy(sphereBody.quaternion);
+
 }
 
 function render(){

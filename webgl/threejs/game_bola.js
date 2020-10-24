@@ -8,18 +8,6 @@ function getScene() {
   return scene;
 }
 
-/**
-* Generate the camera to be used in the scene. Camera args:
-*   [0] field of view: identifies the portion of the scene
-*     visible at any time (in degrees)
-*   [1] aspect ratio: identifies the aspect ratio of the
-*     scene in width/height
-*   [2] near clipping plane: objects closer than the near
-*     clipping plane are culled from the scene
-*   [3] far clipping plane: objects farther than the far
-*     clipping plane are culled from the scene
-**/
-
 function getCamera() {
   var aspectRatio = window.innerWidth / window.innerHeight;
   var camera = new THREE.PerspectiveCamera(75, aspectRatio, 0.1, 10000);
@@ -27,14 +15,6 @@ function getCamera() {
   camera.lookAt(scene.position);
   return camera;
 }
-
-/**
-* Generate the light to be used in the scene. Light args:
-*   [0]: Hexadecimal color of the light
-*   [1]: Numeric value of the light's strength/intensity
-*   [2]: The distance from the light where the intensity is 0
-* @param {obj} scene: the current scene object
-**/
 
 function getLight(scene) {
   var light = new THREE.PointLight( 0xffffff, 0.6, 0, 0 )
@@ -51,10 +31,6 @@ function getLight(scene) {
   scene.add(ambientLight);
   return light;
 }
-
-/**
-* Generate the renderer to be used in the scene
-**/
 
 function getRenderer() {
   // Create the canvas with a renderer
@@ -106,7 +82,7 @@ function getPlanes(scene, loader) {
 /**
 * Add background
 **/
-
+/*
 function getBackground(scene, loader) {
   var imagePrefix = 'sky-parts/';
   var directions  = ['right', 'left', 'top', 'bottom', 'front', 'back'];
@@ -124,7 +100,7 @@ function getBackground(scene, loader) {
   scene.add(sky);
   return sky;
 }
-
+*/
 /**
 * Add a character
 **/
@@ -288,6 +264,7 @@ function render() {
   if (typeof(stats) !== 'undefined') stats.update();
 };
 
+/*
 function setupGui() {
 	// Definicion de los controles
 	effectController = {
@@ -311,7 +288,7 @@ function setupGui() {
     }
 	});
 }
-
+*/
 
 // state
 var pressed = {};
