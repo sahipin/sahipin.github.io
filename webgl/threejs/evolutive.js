@@ -233,7 +233,7 @@ function init() {
 		luzFocalBall.penumbra = 1;
 		luzFocalBall.castShadow = true;
 		luzFocalBall.shadow.camera.near = 0.10;
-		luzFocalBall.shadow.camera.far = 0.01;
+		luzFocalBall.shadow.camera.far = 1000;
 		luzFocalBall.shadow.camera.fov = 36;
 
 		var spotLightHelper = new THREE.SpotLightHelper( luzFocalBall , 'black');
