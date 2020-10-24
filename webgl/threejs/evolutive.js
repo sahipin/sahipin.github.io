@@ -171,7 +171,7 @@ function addSpherePhysics() {
   sphereBody = new CANNON.Body({
     mass: 1,
     material: physicsMaterial,
-    shape: new CANNON.Sphere(0.5),
+    shape: new CANNON.Sphere(0.7),
     linearDamping: 0.5,
     position: new CANNON.Vec3(10, 20, 100)
   });
