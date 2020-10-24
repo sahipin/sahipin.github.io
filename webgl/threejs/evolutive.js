@@ -3,7 +3,7 @@
  *
  * Dibujar formas basicas con animación
  */
-//k
+//llk
 // Variables globales imprescindibles
 // motor render (dibujar), estructura datos almacen dibujos, desde donde dibujamos
 var renderer, scene, camera, cenital, personalCamera;
@@ -359,7 +359,7 @@ function moveSphere() {
 
 	luzFocalBall.target.position.set(sphereBody.position.x,0,0);
 
-	luzFocalBall.angle = Math.PI / 5;
+
 	luzFocalBall.penumbra = 1;
 	luzFocalBall.castShadow = true;
 	luzFocalBall.shadow.camera.near = 0.1;
