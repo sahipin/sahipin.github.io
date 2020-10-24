@@ -230,7 +230,7 @@ function init() {
 
 		luzFocalBall.angle = Math.PI / 8;
 		luzFocalBall.distance = 15;
-		luzFocalBall.penumbra = 1;
+		luzFocalBall.penumbra = 0.1;
 		luzFocalBall.castShadow = true;
 		luzFocalBall.shadow.camera.near = 0.10;
 		luzFocalBall.shadow.camera.far = 1000;
