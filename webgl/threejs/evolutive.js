@@ -171,7 +171,7 @@ function addSpherePhysics() {
   sphereBody = new CANNON.Body({
     mass: 1,
     material: physicsMaterial,
-    shape: new CANNON.Sphere(1),
+    shape: new CANNON.Sphere(0.5),
     linearDamping: 0.5,
     position: new CANNON.Vec3(10, 20, 100)
   });
@@ -333,7 +333,7 @@ function update(){
 
 function moveSphere() {
   var delta = clock.getDelta(); // seconds
-  var moveDistance = 200 * delta; // n pixels per second
+  var moveDistance = 100 * delta; // n pixels per second
   var rotateAngle = Math.PI / 2 * delta; // 90 deg per second
 
   // move forwards, backwards, left, or right
@@ -397,6 +397,13 @@ function generaCiudad() {
 		return;
 	}
 
+  world.bodies.map(function(body){
+		world.removeBody(body);
+	})
+	addSpherePhysics();
+
+	addFloorPhysics();
+
 	var lines = contenido.split('\n');
   for (var i=0 ; i < lines.length; i++){
     var tokens = lines[i].split(' ');
@@ -444,29 +451,26 @@ function generaCiudad() {
     city.add(building);
 
 
-		var materialBasic = new THREE.MeshBasicMaterial({ color: '', wireframe: false });
+		var materialBasic = new THREE.MeshBasicMaterial({ color: 'black', wireframe: false });
     var cube_building_shape = new THREE.BoxGeometry((tokens[3]*1)-1, height, (tokens[4]*1)-1);
 		var buildingShape = new THREE.Mesh(cube_building, materialBasic);
 		buildingShape.position.x = separation_dist * tokens[0]*1+tokens[3]/2+0.5;
 		buildingShape.position.z = separation_dist * tokens[1]*1+tokens[4]/2+0.5;
 		buildingShape.position.y = height/2;
+		city.add(buildingShape);
 
-		buildings.push(buildingShape);
-  }
-
-	buildings.map(function(building) {
-		var q = building.quaternion;
+		var q = buildingShape.quaternion;
 		buildingBody = new CANNON.Body({
-	    mass: 1,
+	    mass: 0,
 	    material: physicsMaterial,
-	    shape: new CANNON.Box(new CANNON.Vec3((tokens[3]*1)-1, height, (tokens[4]*1)-1)),
-	    linearDamping: 0.5,
-	    position: new CANNON.Vec3(buildingShape.position.x, buildingShape.position.y, buildingShape.position.z)
+	    shape: new CANNON.Box(new CANNON.Vec3((tokens[3]*1), height, (tokens[4]*1))),
+	    position: new CANNON.Vec3(separation_dist * tokens[0]*1+tokens[3]/2+0.5, height/2, separation_dist * tokens[1]*1+tokens[4]/2+0.5)
 	  });
 
 
 		world.addBody(buildingBody);
-	})
+  }
+
 
 	scene.add(city);
 	loading_city = 0;
