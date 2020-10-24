@@ -368,7 +368,7 @@ function moveSphere() {
     sphereBody.velocity.x += moveDistance;
   }
 
-	luzFocalBall.position.set(sphereBody.position.x, sphereBody.position.y+0.2, sphereBody.position.z);
+	luzFocalBall.position.set(sphereBody.position.x, sphereBody.position.y+0.5, sphereBody.position.z);
 	luzFocalBall.rotation.x = Math.PI / 2;
 
 }
