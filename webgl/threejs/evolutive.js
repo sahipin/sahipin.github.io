@@ -360,6 +360,7 @@ function moveSphere() {
 	luzFocalBall.target.position.set(sphereBody.position.x,0,0);
 
 
+	luzFocal.angle = Math.PI / 10;
 	luzFocalBall.penumbra = 1;
 	luzFocalBall.castShadow = true;
 	luzFocalBall.shadow.camera.near = 0.1;
