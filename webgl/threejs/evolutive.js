@@ -613,7 +613,7 @@ function setupGui() {
 						});
 		}
 		else{
-			luzAmbiente.intensity = 0.1;
+			luzAmbiente.intensity = 0.05;
 			luzFocal.position.set( 200, 200, 400);
 			loader.load('images/edificios/night.jpg' , function(texture)
 						{
