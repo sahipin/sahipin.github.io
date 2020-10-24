@@ -9,7 +9,7 @@
 var renderer, scene, camera, cenital, personalCamera;
 var materialE,materialG,materialF,materialR,materialS,materialH,material_default;
 var texE,texG,texF,texR,texS,texH,tex_default;
-var luzAmbiente, luzFocal;
+var luzAmbiente, luzFocal, luzPuntual;
 var asfalto;
 
 var pressed = {};
@@ -222,6 +222,10 @@ function init() {
 		luzAmbiente = new THREE.AmbientLight(0xFFFFFF, 1);
 		scene.add(luzAmbiente);
 
+		//Luz puntual (color, intensidad)
+		luzPuntual = new THREE.PointLight(0xBBBB00,0.4);
+		scene.add(luzPuntual);
+
 		//luz focal (color, intensidad)
 		luzFocal = new THREE.SpotLight(0xFFFFFF, 0.8, );
 		//Posición
@@ -350,14 +354,17 @@ function moveSphere() {
   if (pressed['D'] || pressed['ARROWRIGHT']) {
     sphereBody.velocity.x += moveDistance;
   }
+
+	luzPuntual.position.set(sphereBody.position.x, sphereBody.position.y, sphereBody.position.z);
+
 }
 
 
 function moveCamera() {
 	if(personalCamera){
 	  personalCamera.position.x = sphereBody.position.x + 0;
-	  personalCamera.position.y = sphereBody.position.y + 5;
-	  personalCamera.position.z = sphereBody.position.z + 10;
+	  personalCamera.position.y = sphereBody.position.y + 3;
+	  personalCamera.position.z = sphereBody.position.z + 6;
 	  personalCamera.lookAt(sphereGroup.position);
 	}
 }
@@ -400,6 +407,7 @@ function generaCiudad() {
   world.bodies.map(function(body){
 		world.removeBody(body);
 	})
+
 	addSpherePhysics();
 
 	addFloorPhysics();
