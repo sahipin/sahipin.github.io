@@ -349,7 +349,7 @@ function update(){
 
 function moveSphere() {
   var delta = clock.getDelta(); // seconds
-  var moveDistance = 100 * delta; // n pixels per second
+  var moveDistance = 50 * delta; // n pixels per second
   var rotateAngle = Math.PI / 2 * delta; // 90 deg per second
 
   // move forwards, backwards, left, or right
@@ -614,7 +614,7 @@ function setupGui() {
 						});
 		}
 		else{
-			luzAmbiente.intensity = 0.2;
+			luzAmbiente.intensity = 0.1;
 			luzFocal.position.set( 200, 200, 400);
 			loader.load('images/edificios/night.jpg' , function(texture)
 						{
