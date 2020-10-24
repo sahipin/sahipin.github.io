@@ -143,9 +143,9 @@ function addFloorPhysics() {
   backX.position.y = 50;
   backZ.position.y = 50;
   backZ.position.x = 192;
-  backZ.position.x = -1;
+  backZ.position.z = -3;
   backX.position.z = 192;
-  backX.position.z = -1;
+  backX.position.x = -3;
   scene.add(backX);
 	scene.add(backZ);
 	limites.push(backX);
@@ -172,7 +172,7 @@ function addSpherePhysics() {
   sphereBody = new CANNON.Body({
     mass: 1,
     material: physicsMaterial,
-    shape: new CANNON.Sphere(3),
+    shape: new CANNON.Sphere(2),
     linearDamping: 0.5,
     position: new CANNON.Vec3(10, 20, 100)
   });
