@@ -92,7 +92,7 @@ function getPhysicsMaterial() {
 }
 
 function getSphere(scene) {
-	var geometry = new THREE.SphereGeometry( 2, 12, 9 );
+	var geometry = new THREE.SphereGeometry( 1, 12, 9 );
   var material = new THREE.MeshPhongMaterial({
     color: 0xd0901d,
     emissive: 0xaa0000,
@@ -172,7 +172,7 @@ function addSpherePhysics() {
   sphereBody = new CANNON.Body({
     mass: 1,
     material: physicsMaterial,
-    shape: new CANNON.Sphere(2),
+    shape: new CANNON.Sphere(1),
     linearDamping: 0.5,
     position: new CANNON.Vec3(10, 20, 100)
   });
