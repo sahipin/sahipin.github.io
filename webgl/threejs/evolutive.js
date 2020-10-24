@@ -230,10 +230,10 @@ function init() {
 
 		luzFocalBall.angle = Math.PI / 8;
 		luzFocalBall.distance = 15;
-		luzFocalBall.penumbra = 0.1;
+		luzFocalBall.penumbra = 0.5;
 		luzFocalBall.castShadow = true;
 		luzFocalBall.shadow.camera.near = 0.10;
-		luzFocalBall.shadow.camera.far = 1000;
+		luzFocalBall.shadow.camera.far = 10;
 		luzFocalBall.shadow.camera.fov = 36;
 
 		var spotLightHelper = new THREE.SpotLightHelper( luzFocalBall , 'black');
@@ -368,7 +368,7 @@ function moveSphere() {
     sphereBody.velocity.x += moveDistance;
   }
 
-	luzFocalBall.position.set(sphereBody.position.x, sphereBody.position.y, sphereBody.position.z-1);
+	luzFocalBall.position.set(sphereBody.position.x, sphereBody.position.y, sphereBody.position.z-2);
 	luzFocalBall.rotation.x = Math.PI / 2;
 
 }
