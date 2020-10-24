@@ -357,7 +357,7 @@ function moveSphere() {
 
 	luzFocalBall.position.set(sphereBody.position.x, sphereBody.position.y+2, sphereBody.position.z);
 
-	luzFocalBall.target.position.set(sphereBody.position.x,0,0);
+	luzFocalBall.target.position.set(sphereBody.position.x,0,sphereBody.position.z - 10);
 
 
 	luzFocal.angle = Math.PI / 10;
