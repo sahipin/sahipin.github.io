@@ -368,6 +368,8 @@ function moveSphere() {
   }
 
 	luzFocalBall.position.set(sphereBody.position.x, sphereBody.position.y, sphereBody.position.z-2);
+
+	luzFocal.target.position.set(sphereBody.position.x,0,0);
 	luzFocalBall.rotation.x = Math.PI / 2;
 
 }
