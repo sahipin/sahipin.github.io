@@ -223,12 +223,12 @@ function init() {
 		scene.add(luzAmbiente);
 
 		//Luz focal desde la pelota (color, intensidad)
-		luzFocalBall = new THREE.SpotLight(0xFFFFFF, 10, );
+		luzFocalBall = new THREE.SpotLight(0xFFFFFF, 5, );
 		scene.add(luzFocalBall);
 
 
 
-		luzFocalBall.angle = Math.PI / 4;
+		luzFocalBall.angle = Math.PI / 7;
 		luzFocalBall.distance = 15;
 		luzFocalBall.castShadow = true;
 		luzFocalBall.shadow.camera.near = 0;
