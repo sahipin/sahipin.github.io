@@ -205,8 +205,8 @@ function addListeners() {
   window.addEventListener('resize', function(e) {
     windowHalfX = window.innerWidth / 2;
     windowHalfY = window.innerHeight / 2;
-    cameraPersonal.aspect = window.innerWidth / window.innerHeight;
-    cameraPersonal.updateProjectionMatrix();
+    personalCamera.aspect = window.innerWidth / window.innerHeight;
+    personalCamera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
     if (typeof(controls) != 'undefined') controls.handleResize();
   })
@@ -241,10 +241,10 @@ function moveSphere() {
 **/
 
 function moveCamera() {
-  cameraPersonal.position.x = sphereBody.position.x + 0;
-  cameraPersonal.position.y = sphereBody.position.y + 50;
-  cameraPersonal.position.z = sphereBody.position.z + -200;
-  cameraPersonal.lookAt(sphereGroup.position);
+  personalCamera.position.x = sphereBody.position.x + 0;
+  personalCamera.position.y = sphereBody.position.y + 50;
+  personalCamera.position.z = sphereBody.position.z + -200;
+  personalCamera.lookAt(sphereGroup.position);
 }
 
 function updatePhysics() {
@@ -256,7 +256,7 @@ function updatePhysics() {
 // Render loop
 function render() {
   requestAnimationFrame(render);
-  renderer.render(scene, cameraPersonal);
+  renderer.render(scene, personalCamera);
   moveSphere();
   updatePhysics();
   if (typeof(controls) === 'undefined') moveCamera();
@@ -296,12 +296,12 @@ var clock = new THREE.Clock();
 
 // globals
 var scene = getScene();
-var cameraPersonal = getCamera();
+var personalCamera = getCamera();
 var light = getLight(scene);
 var renderer = getRenderer();
 var world = getPhysics();
 var physicsMaterial = getPhysicsMaterial();
-//var controls = getControls(cameraPersonal, renderer);
+//var controls = getControls(personalCamera, renderer);
 //controls.enabled = false;
 
 // global body references

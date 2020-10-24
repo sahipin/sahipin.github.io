@@ -92,7 +92,7 @@ function getPhysicsMaterial() {
 }
 
 function getSphere(scene) {
-	var geometry = new THREE.SphereGeometry( 6, 12, 9 );
+	var geometry = new THREE.SphereGeometry( 2, 12, 9 );
   var material = new THREE.MeshPhongMaterial({
     color: 0xd0901d,
     emissive: 0xaa0000,
@@ -115,6 +115,10 @@ function getSphere(scene) {
 
 function addFloorPhysics() {
 
+
+  var limites = [];
+
+  // suelo
 	var material = new THREE.MeshBasicMaterial({ color: '', wireframe: false });
 		var geometry = new THREE.PlaneGeometry(2000, 2000);
 		var plane = new THREE.Mesh(geometry, material);
@@ -126,21 +130,49 @@ function addFloorPhysics() {
 		plane.castShadow = true;
 		scene.add(plane);
 
-  var q = plane.quaternion;
-  floorBody = new CANNON.Body({
-    mass: 0, // mass = 0 makes the body static
-    material: physicsMaterial,
-    shape: new CANNON.Plane(),
-    quaternion: new CANNON.Quaternion(-q._x, q._y, q._z, q._w)
-  });
-  world.addBody(floorBody);
+	limites.push(plane);
+
+
+
+
+	var pared = new THREE.PlaneGeometry(384,185,10,10);
+	backX = new THREE.Mesh(pared, material);
+	backZ = new THREE.Mesh(pared, material);
+
+  backX.rotation.y = Math.PI / 2;
+  backX.position.y = 50;
+  backZ.position.y = 50;
+  backZ.position.x = 192;
+  backZ.position.z = -1;
+  backX.position.z = 192;
+  backX.position.x = -1;
+  scene.add(backX);
+	scene.add(backZ);
+	limites.push(backX);
+	limites.push(backZ);
+
+	limites.map(function(plane) {
+		var q = plane.quaternion;
+		floorBody = new CANNON.Body({
+			mass: 0, // mass = 0 makes the body static
+			material: physicsMaterial,
+			shape: new CANNON.Plane(),
+			quaternion: new CANNON.Quaternion(-q._x, q._y, q._z, q._w)
+		});
+		world.addBody(floorBody);
+	})
+
+
+
+
+
 }
 
 function addSpherePhysics() {
   sphereBody = new CANNON.Body({
     mass: 1,
     material: physicsMaterial,
-    shape: new CANNON.Sphere(7),
+    shape: new CANNON.Sphere(3),
     linearDamping: 0.5,
     position: new CANNON.Vec3(10, 20, 100)
   });
@@ -302,7 +334,7 @@ function update(){
 
 function moveSphere() {
   var delta = clock.getDelta(); // seconds
-  var moveDistance = 100 * delta; // n pixels per second
+  var moveDistance = 200 * delta; // n pixels per second
   var rotateAngle = Math.PI / 2 * delta; // 90 deg per second
 
   // move forwards, backwards, left, or right
@@ -319,6 +351,16 @@ function moveSphere() {
   if (pressed['D'] || pressed['ARROWRIGHT']) {
     sphereBody.velocity.x -= moveDistance;
   }
+}
+
+
+function moveCamera() {
+	if(personalCamera){
+	  personalCamera.position.x = sphereBody.position.x + 0;
+	  personalCamera.position.y = sphereBody.position.y + 50;
+	  personalCamera.position.z = sphereBody.position.z + -200;
+	  personalCamera.lookAt(sphereGroup.position);
+	}
 }
 
 function leerArchivo(e) {
@@ -425,6 +467,7 @@ function render(){
 	moveSphere();
 	updatePhysics();
 
+	if (typeof(controls) === 'undefined') moveCamera();
   update();
 
   renderer.clear();
