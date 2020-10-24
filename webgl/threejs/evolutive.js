@@ -236,7 +236,7 @@ function init() {
 		luzFocal.penumbra = 0.6;
 		luzFocal.castShadow = true;
 		luzFocal.shadow.camera.near = 0.1;
-		luzFocal.shadow.camera.far = 10;
+		luzFocal.shadow.camera.far = 1000;
 		luzFocal.shadow.camera.fov = 36;
 		scene.add(luzFocal);
 
@@ -364,7 +364,7 @@ function moveSphere() {
 	luzFocalBall.penumbra = 1;
 	luzFocalBall.castShadow = true;
 	luzFocalBall.shadow.camera.near = 0.1;
-	luzFocalBall.shadow.camera.far = 1000;
+	luzFocalBall.shadow.camera.far = 10;
 	luzFocalBall.shadow.camera.fov = 36;
 
 }
