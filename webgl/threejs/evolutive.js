@@ -228,9 +228,8 @@ function init() {
 
 
 
-		luzFocalBall.angle = Math.PI / 10;
+		luzFocalBall.angle = Math.PI / 2;
 		luzFocalBall.distance = 15;
-		luzFocalBall.penumbra = 0;
 		luzFocalBall.castShadow = true;
 		luzFocalBall.shadow.camera.near = 0;
 		luzFocalBall.shadow.camera.far = 100;
@@ -246,7 +245,7 @@ function init() {
 		//Dirección
 		luzFocal.target.position.set(0,0,0);
 		luzFocal.angle = Math.PI / 5;
-		//luzFocal.penumbra = ;
+		luzFocal.penumbra = 0.6;
 		luzFocal.castShadow = true;
 		luzFocal.shadow.camera.near = 0.1;
 		luzFocal.shadow.camera.far = 1000;
