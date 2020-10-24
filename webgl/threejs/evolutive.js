@@ -459,7 +459,7 @@ function generaCiudad() {
 		buildingBody = new CANNON.Body({
 	    mass: 1,
 	    material: physicsMaterial,
-	    shape: new CANNON.Sphere(1),
+	    shape: new CANNON.Box(new CANNON.Vec3(tokens[3]*1)-1, height, (tokens[4]*1)-1)),
 	    linearDamping: 0.5,
 	    position: new CANNON.Vec3(buildingShape.position.x, buildingShape.position.y, buildingShape.position.z)
 	  });
