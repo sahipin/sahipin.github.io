@@ -7,9 +7,12 @@
 // Variables globales imprescindibles
 // motor render (dibujar), estructura datos almacen dibujos, desde donde dibujamos
 var renderer, scene, camera, cenital, personalCamera;
-var materialE,materialG,materialF,materialR,materialS,materialH,material_default;
+var materialE,materialG,materialF,materialR,materialS,materialH,material_default, mat_asfalto;
 var texE,texG,texF,texR,texS,texH,tex_default;
 var luzAmbiente, luzFocal;
+
+var pressed = {};
+var clock = new THREE.Clock();
 // Variables globales
 var city, angulo = 0, material;
 var r = t = 40;
@@ -24,8 +27,13 @@ var notified = 0;
 var loading_city = 0;
 // Acciones
 init();
+var world = getPhysics();
 loadScene();
 setupGui();
+
+var physicsMaterial = getPhysicsMaterial();
+var sphereData,sphere,sphereGroup, sphereBody;
+
 render();
 
 
@@ -47,6 +55,74 @@ function setCameras(ar ){
   camera.lookAt(new THREE.Vector3(0,0,0));
   scene.add(cenital);
 	scene.add(camera);
+}
+
+function getPhysics() {
+  world = new CANNON.World();
+  world.gravity.set(0, -400, 0); // earth = -9.82 m/s
+  world.broadphase = new CANNON.NaiveBroadphase();
+  world.broadphase.useBoundingBoxes = true;
+  var solver = new CANNON.GSSolver();
+  solver.iterations = 7;
+  solver.tolerance = 0.1;
+  world.solver = solver;
+  world.quatNormalizeSkip = 0;
+  world.quatNormalizeFast = false;
+  world.defaultContactMaterial.contactEquationStiffness = 1e9;
+  world.defaultContactMaterial.contactEquationRelaxation = 4;
+  return world;
+}
+
+function getPhysicsMaterial() {
+  var physicsMaterial = new CANNON.Material('slipperyMaterial');
+  var physicsContactMaterial = new CANNON.ContactMaterial(
+      physicsMaterial, physicsMaterial, 0.0, 0.3)
+  world.addContactMaterial(physicsContactMaterial);
+  return physicsMaterial;
+}
+
+function getSphere(scene) {
+  var geometry = new THREE.SphereGeometry( 30, 12, 9 );
+  var material = new THREE.MeshPhongMaterial({
+    color: 0xd0901d,
+    emissive: 0xaa0000,
+    side: THREE.DoubleSide,
+    flatShading: true
+  });
+  var sphere = new THREE.Mesh( geometry, material );
+  // allow the sphere to cast a shadow
+  sphere.castShadow = true;
+  sphere.receiveShadow = false;
+  // create a group for translations and rotations
+  var sphereGroup = new THREE.Group();
+  sphereGroup.add(sphere)
+  sphereGroup.castShadow = true;
+  sphereGroup.receiveShadow = false;
+  scene.add(sphereGroup);
+  return [sphere, sphereGroup];
+}
+
+
+function addFloorPhysics() {
+  var q = mat_asfalto.quaternion;
+  floorBody = new CANNON.Body({
+    mass: 0, // mass = 0 makes the body static
+    material: physicsMaterial,
+    shape: new CANNON.Plane(),
+    quaternion: new CANNON.Quaternion(-q._x, q._y, q._z, q._w)
+  });
+  world.addBody(floorBody);
+}
+
+function addSpherePhysics() {
+  sphereBody = new CANNON.Body({
+    mass: 1,
+    material: physicsMaterial,
+    shape: new CANNON.Sphere(30),
+    linearDamping: 0.5,
+    position: new CANNON.Vec3(10, 1000, 20)
+  });
+  world.addBody(sphereBody);
 }
 
 function setPersonalCamera (){
@@ -167,9 +243,9 @@ function loadScene() {
 				});
 	var tex = loader.load('images/edificios/asfalto.jpg' , function(texture)
 				{
- 				 var fondo = new THREE.MeshLambertMaterial({ map:texture });
+ 				 mat_asfalto = new THREE.MeshLambertMaterial({ map:texture });
 				 var suelo = new THREE.PlaneGeometry(384,384,10,10);
-	 				asfalto = new THREE.Mesh(suelo, fondo);
+	 				asfalto = new THREE.Mesh(suelo, mat_asfalto);
 					asfalto.receiveShadow = true;
 					asfalto.castShadow = true;
 					asfalto.rotation.x = -Math.PI / 2;
@@ -177,6 +253,11 @@ function loadScene() {
 					asfalto.position.z = 192;
 
 	 				scene.add(asfalto);
+					addFloorPhysics();
+					sphereData = getSphere(scene);
+					sphere = sphereData[0];
+					sphereGroup = sphereData[1];
+					addSpherePhysics();
 				});
 
 		tex.wrapS = THREE.RepeatWrapping;
@@ -190,6 +271,29 @@ function update(){
   //angulo += Math.PI / 1000;
   //robot.rotation.y = angulo;
 
+}
+
+function moveSphere() {
+	if(!sphereBody){
+		return;
+	}
+  var delta = clock.getDelta(); // seconds
+  var moveDistance = 1 * delta; // n pixels per second
+  var rotateAngle = Math.PI / 2 * delta; // 90 deg per second
+
+  // move forwards, backwards, left, or right
+  if (pressed['W'] || pressed['ARROWUP']) {
+    sphereBody.velocity.z += moveDistance;
+  }
+  if (pressed['S'] || pressed['ARROWDOWN']) {
+    sphereBody.velocity.z -= moveDistance;
+  }
+  if (pressed['A'] || pressed['ARROWLEFT']) {
+    sphereBody.velocity.x += moveDistance;
+  }
+  if (pressed['D'] || pressed['ARROWRIGHT']) {
+    sphereBody.velocity.x -= moveDistance;
+  }
 }
 
 function leerArchivo(e) {
@@ -279,12 +383,23 @@ function generaCiudad() {
 	loading_city = 0;
 }
 
+function updatePhysics() {
+  world.step(1/60);
+	if(sphereBody){
+	  sphereGroup.position.copy(sphereBody.position);
+	  sphereGroup.quaternion.copy(sphereBody.quaternion);
+	}
+}
+
 function render(){
   // dibujar cada frame
   // Callback de redibujado
 
   // recibe la misma funcion
   requestAnimationFrame(render);
+
+	moveSphere();
+	updatePhysics();
 
   update();
 
