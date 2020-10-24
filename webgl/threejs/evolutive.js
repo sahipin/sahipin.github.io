@@ -120,7 +120,6 @@ function addFloorPhysics() {
 		var plane = new THREE.Mesh(geometry, material);
 		plane.position.x = 1000;
 		plane.position.z = 1000;
-		plane.position.y = -3;
 		plane.rotation.x = Math.PI / 2;
 		plane.receiveShadow = true;
 		plane.castShadow = true;
@@ -140,7 +139,7 @@ function addSpherePhysics() {
   sphereBody = new CANNON.Body({
     mass: 1,
     material: physicsMaterial,
-    shape: new CANNON.Sphere(3),
+    shape: new CANNON.Sphere(6),
     linearDamping: 0.5,
     position: new CANNON.Vec3(10, 20, 100)
   });
@@ -302,7 +301,7 @@ function update(){
 
 function moveSphere() {
   var delta = clock.getDelta(); // seconds
-  var moveDistance = 500 * delta; // n pixels per second
+  var moveDistance = 5 * delta; // n pixels per second
   var rotateAngle = Math.PI / 2 * delta; // 90 deg per second
 
   // move forwards, backwards, left, or right
