@@ -143,9 +143,9 @@ function addFloorPhysics() {
   backX.position.y = 50;
   backZ.position.y = 50;
   backZ.position.x = 192;
-  backZ.position.z = -1;
+  backZ.position.x = -1;
   backX.position.z = 192;
-  backX.position.x = -1;
+  backX.position.z = -1;
   scene.add(backX);
 	scene.add(backZ);
 	limites.push(backX);
@@ -340,16 +340,16 @@ function moveSphere() {
   // move forwards, backwards, left, or right
   if (pressed['W'] || pressed['ARROWUP']) {
 		  console.log(moveDistance);
-    sphereBody.velocity.z += moveDistance;
-  }
-  if (pressed['S'] || pressed['ARROWDOWN']) {
     sphereBody.velocity.z -= moveDistance;
   }
+  if (pressed['S'] || pressed['ARROWDOWN']) {
+    sphereBody.velocity.z += moveDistance;
+  }
   if (pressed['A'] || pressed['ARROWLEFT']) {
-    sphereBody.velocity.x += moveDistance;
+    sphereBody.velocity.x -= moveDistance;
   }
   if (pressed['D'] || pressed['ARROWRIGHT']) {
-    sphereBody.velocity.x -= moveDistance;
+    sphereBody.velocity.x += moveDistance;
   }
 }
 
@@ -357,8 +357,8 @@ function moveSphere() {
 function moveCamera() {
 	if(personalCamera){
 	  personalCamera.position.x = sphereBody.position.x + 0;
-	  personalCamera.position.y = sphereBody.position.y + 50;
-	  personalCamera.position.z = sphereBody.position.z + -200;
+	  personalCamera.position.y = sphereBody.position.y + 5;
+	  personalCamera.position.z = sphereBody.position.z + 10;
 	  personalCamera.lookAt(sphereGroup.position);
 	}
 }
