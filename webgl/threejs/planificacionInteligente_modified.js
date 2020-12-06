@@ -249,6 +249,22 @@ function exitPassenger(elevator, passenger, seat){
 	new TWEEN.Tween(passenger.position)
 	   .to(passenger.position.clone().setZ(newZPos).setX(newXPos).setY(newYPos), 500).onComplete(
 	   function() {
+       const loader = new THREE.FontLoader();
+       loader.load( 'fonts/gentilis_bold.typeface.json', function ( font ) {
+         if (passenger == passenger0 && 10 == passenger.position.y -5){
+           const textGeom = new THREE.TextGeometry( 'Hello three.js!', {
+             font: font,
+             size: 5,
+             height: 5
+           } );
+           var text = new THREE.Mesh(textGeom, material);
+           text.position.x = 50;
+           text.position.y = 10;
+           problem.add(text);
+         }
+
+       } );
+
 	     readLine();
 	}).start();
 }
