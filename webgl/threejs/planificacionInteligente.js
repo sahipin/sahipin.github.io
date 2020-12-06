@@ -228,7 +228,7 @@ function enterPassenger(elevator, passenger, seat){
 
 function exitPassenger(elevator, passenger, seat){
 	var newZPos = elevator.position.z +4;
-	var newXPos = elevator.position.x;
+	var newXPos = Math.random() * (20);
 	var newYPos = elevator.position.y - 5 + 0.5;
 	problem.add(passenger);
 	elevator.remove(passenger);
