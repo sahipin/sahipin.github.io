@@ -44,12 +44,11 @@ function setCameras(ar ){
 	//perspectiva
 	camera = new THREE.PerspectiveCamera(45, ar, 0.1, 10000 ); // valores de cerca y lejos (los dos ultimos)
     // Movemos la camare respecto al sistema de referencia de la scena
-	camera.position.set(60, 140, 190); // traslado de la camara desde el origen de coordenadas
-	camera.lookAt(new THREE.Vector3(0,0,0));
+	camera.position.set(60, 200, 280); // traslado de la camara desde el origen de coordenadas
+	// camera.lookAt(new THREE.Vector3(0,100,0));
 	//scene.add(cenital);
 	scene.add(camera);
 }
-
 
 function init() {
   // Crear el motor, la escena y la camara
@@ -72,7 +71,7 @@ function init() {
 
   //controlador de camara
   cameraController = new THREE.OrbitControls( camera, renderer.domElement);
-  cameraController.target.set(0,0,0);
+  cameraController.target.set(0,80,0);
   cameraController.noKeys = true;
 
   // Luces
@@ -540,8 +539,8 @@ function render(){
   renderer.render( scene, camera );
 
 
-  var size = Math.min(window.innerWidth, window.innerHeight)/4;
-  renderer.setViewport(0, 0, size, size);
+  //var size = Math.min(window.innerWidth, window.innerHeight)/4;
+  //renderer.setViewport(0, 0, size, size);
   //renderer.render( scene, cenital );
 
 	if(personalCamera){
@@ -594,17 +593,4 @@ function updateAspectRatio(){
 		personalCamera.updateProjectionMatrix();
 	}
 	render();
-}
-
-function set_city_backGround(fondo){
-	var back = new THREE.PlaneGeometry(384,185,10,10);
-	backX = new THREE.Mesh(back, fondo);
-  backZ = new THREE.Mesh(back, fondo);
-  backX.rotation.y = Math.PI / 2;
-  backX.position.y = 50;
-  backZ.position.y = 50;
-  backZ.position.x = 192;
-  backX.position.z = 192;
-  scene.add(backX);
-	scene.add(backZ);
 }
