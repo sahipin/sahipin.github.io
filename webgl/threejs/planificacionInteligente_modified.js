@@ -239,9 +239,10 @@ function enterPassenger(elevator, passenger, seat){
 
 function exitPassenger(elevator, passenger, seat){
 	var newZPos = elevator.position.z +4;
-	var newXPos = elevator.position.x;
+	var newXPos = Math.random() * (30);//elevator.position.x;
 	var newYPos = elevator.position.y - 5 + 0.5;
 	problem.add(passenger);
+  console.log(newXPos);
 	elevator.remove(passenger);
 	passenger.position.x = elevator.position.x;
 	passenger.position.y = elevator.position.y +5;
@@ -249,23 +250,7 @@ function exitPassenger(elevator, passenger, seat){
 	new TWEEN.Tween(passenger.position)
 	   .to(passenger.position.clone().setZ(newZPos).setX(newXPos).setY(newYPos), 500).onComplete(
 	   function() {
-       const loader = new THREE.FontLoader();
-       loader.load( 'fonts/gentilis_bold.typeface.json', function ( font ) {
-         if (passenger == passenger0 && 10 == passenger.position.y -5){
-           const textGeom = new THREE.TextGeometry( 'Hello three.js!', {
-             font: font,
-             size: 5,
-             height: 5
-           } );
-           var text = new THREE.Mesh(textGeom, material);
-           text.position.x = 50;
-           text.position.y = 10;
-           problem.add(text);
-         }
-
-       } );
-
-	     readLine();
+        readLine();
 	}).start();
 }
 
