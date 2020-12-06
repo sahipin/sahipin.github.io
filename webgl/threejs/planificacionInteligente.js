@@ -45,19 +45,11 @@ function setCameras(ar ){
 	camera = new THREE.PerspectiveCamera(45, ar, 0.1, 10000 ); // valores de cerca y lejos (los dos ultimos)
     // Movemos la camare respecto al sistema de referencia de la scena
 	camera.position.set(60, 140, 190); // traslado de la camara desde el origen de coordenadas
-	camera.lookAt(new THREE.Vector3(0,130/2,0));
+	camera.lookAt(new THREE.Vector3(0,0,0));
 	//scene.add(cenital);
 	scene.add(camera);
 }
 
-function setPersonalCamera (){
-
-	  var ar =  window.innerWidth / window.innerHeight;
-		personalCamera = new THREE.PerspectiveCamera(75, ar, 0.1, 10000);
-		personalCamera.position.set(0, 200, -500);
-		personalCamera.lookAt(scene.position);
-		scene.add(personalCamera);
-}
 
 function init() {
   // Crear el motor, la escena y la camara
@@ -80,7 +72,7 @@ function init() {
 
   //controlador de camara
   cameraController = new THREE.OrbitControls( camera, renderer.domElement);
-  cameraController.target.set(0,130/2,0);
+  cameraController.target.set(0,0,0);
   cameraController.noKeys = true;
 
   // Luces
