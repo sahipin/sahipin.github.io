@@ -44,7 +44,7 @@ function setCameras(ar ){
 	//perspectiva
 	camera = new THREE.PerspectiveCamera(45, ar, 0.1, 10000 ); // valores de cerca y lejos (los dos ultimos)
     // Movemos la camare respecto al sistema de referencia de la scena
-	camera.position.set(60, 200, 280); // traslado de la camara desde el origen de coordenadas
+	camera.position.set(60, 150, 280); // traslado de la camara desde el origen de coordenadas
 	// camera.lookAt(new THREE.Vector3(0,100,0));
 	//scene.add(cenital);
 	scene.add(camera);
