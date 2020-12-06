@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!-- Planificacion inteligente, representacion del problema de los ascensores -->
+
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <title>Ascensores</title>
+    <style>
+        body {
+            background-color: white;
+            margin: 0px;
+            overflow: hidden;
+        }
+
+    </style>
+
+    <input type="file" id="file-input" />
+    <h3 style="font-family: Arial, Helvetica, sans-serif;">Acción:</h3><h4 style="font-family: Arial, Helvetica, sans-serif;" id="actionInProgress"></h4>
+    <pre id="contenido-archivo"></pre>
+
+</head>
+
+<body>
+    <!-- contenedor del canvas-->
+    <div id="container" ></div>
+
+    <!-- bibliotecas sobre threejs -->
+    <script src="lib/three.min_r96.js"></script>
+  	<script src="lib/OrbitControls.js"></script>
+ 	  <script src="lib/dat.gui.min.js"></script>
+ 	  <script src="lib/cannon_062.js"></script>
+ 	  <script src="lib/tween_18.js"></script>
+
+    <script src="threejs/planificacionInteligente_modified.js"></script>
+
+</body>
+
+</html>

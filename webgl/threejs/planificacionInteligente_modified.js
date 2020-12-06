@@ -10,8 +10,8 @@ var renderer, scene, camera, cenital, personalCamera;
 var materialE,materialG,materialF,materialR,materialS,materialH,material_default;
 var texE,texG,texF,texR,texS,texH,tex_default;
 // Variables globales
-var elevator0, elevator1, elevator2, elevator3, elevator4;
-var passenger0, passenger1, passenger2, passenger3, passenger4;
+var elevator0, elevator1, elevator2, elevator3, elevator4, elevator5;
+var passenger0, passenger1, passenger2, passenger3, passenger4, passenger5, passenger6, passenger7, passenger8;
 var problem, angulo = 0, material;
 var r = t = 40;
 var l = b = -r;
@@ -97,30 +97,41 @@ elevator1 = new THREE.Object3D();
 elevator2 = new THREE.Object3D();
 elevator3 = new THREE.Object3D();
 elevator4 = new THREE.Object3D();
+elevator5 = new THREE.Object3D();
 
 generateElevator(elevator0, 0,-20);
 generateElevator(elevator1, 40,-10);
 generateElevator(elevator2, 40,0);
 generateElevator(elevator3, 80,10);
-generateElevator(elevator4, 0,20, false);
+generateElevator(elevator4, 0, 20, false);
+generateElevator(elevator5, 0, 30, false);
 
 problem.add(elevator0);
 problem.add(elevator1);
 problem.add(elevator2);
 problem.add(elevator3);
 problem.add(elevator4);
+problem.add(elevator5);
 
-passenger0 = generatePassenger(20, 0);
-passenger1 = generatePassenger(40, 0);
-passenger2 = generatePassenger(10, 1);
+passenger0 = generatePassenger(00, 0);
+passenger1 = generatePassenger(20, 0);
+passenger2 = generatePassenger(50, 1);
 passenger3 = generatePassenger(80, 0);
-passenger4 = generatePassenger(10, 0);
+passenger4 = generatePassenger(80, 0);
+passenger5 = generatePassenger(40, 0);
+passenger6 = generatePassenger(70, 0);
+passenger7 = generatePassenger(60, 1);
+passenger8 = generatePassenger(120, 0);
 
 problem.add(passenger0);
 problem.add(passenger1);
 problem.add(passenger2);
 problem.add(passenger3);
 problem.add(passenger4);
+problem.add(passenger5);
+problem.add(passenger6);
+problem.add(passenger7);
+problem.add(passenger8);
 
 scene.add(problem);
 
@@ -262,7 +273,7 @@ function generateBuilding() {
 		// Geometrias
 		var height = 10*i;
 		//var floor = new THREE.PlaneGeometry(50, 20);
-		var floor = new THREE.BoxGeometry(50,20,0.5);
+		var floor = new THREE.BoxGeometry(70,20,0.5);
 		var tex_to_modify = tex_default;
 		//material = new THREE.MeshBasicMaterial({ color: 'grey', wireframe: false, side: THREE.DoubleSide});
 		material = new THREE.MeshPhongMaterial({
@@ -280,7 +291,7 @@ function generateBuilding() {
 
 		if(i != 13){
 
-			var wall = new THREE.PlaneGeometry(50, 10);
+			var wall = new THREE.PlaneGeometry(70, 10);
 			texturePared = new THREE.TextureLoader().load(path + 'pared'+ i+'.png'); // Añadir paredes fondo
 			materialPared = new THREE.MeshPhongMaterial({map: texturePared, side: THREE.DoubleSide});
 			var wallMesh = new THREE.Mesh(wall, materialPared);
@@ -299,7 +310,7 @@ function generateBuilding() {
 			var wallMesh = new THREE.Mesh(wall, materialNumero);
 			wallMesh.rotation.y = Math.PI / 2;
 			wallMesh.position.y = height + 5;
-			wallMesh.position.x = -25;
+			wallMesh.position.x = -35;
 
 			problem.add(wallMesh);
 		}
@@ -405,8 +416,11 @@ function readLine( ) {
 			case "SLOWELEVATOR3":
 				elevatorToMove = elevator3;
 				break;
-			case "SLOWELEVATOR4":
+			case "FASTELEVATORPAR":
 				elevatorToMove = elevator4;
+				break;
+			case "FASTELEVATORIMPAR":
+				elevatorToMove = elevator5;
 				break;
 			default:
 		}
@@ -475,8 +489,11 @@ function readLine( ) {
 			case "SLOWELEVATOR3":
 				elevatorToMove = elevator3;
 				break;
-			case "SLOWELEVATOR4":
+			case "FASTELEVATORPAR":
 				elevatorToMove = elevator4;
+				break;
+			case "FASTELEVATORIMPAR":
+				elevatorToMove = elevator5;
 				break;
 			default:
 		}
@@ -496,6 +513,18 @@ function readLine( ) {
 				break;
 			case "PASSENGER4":
 				passengerToMove = passenger4;
+				break;
+			case "PASSENGER5":
+				passengerToMove = passenger5;
+				break;
+			case "PASSENGER6":
+				passengerToMove = passenger6;
+				break;
+			case "PASSENGER7":
+				passengerToMove = passenger7;
+				break;
+			case "PASSENGER8":
+				passengerToMove = passenger8;
 				break;
 			default:
 		}
