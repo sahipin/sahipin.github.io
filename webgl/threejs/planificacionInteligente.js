@@ -18,7 +18,7 @@ var l = b = -r;
 var max_height = 20, separation_dist = 1;
 var cameraController;
 var lineToRead = 0;
-var path = "images/";
+var path = "images/ImagesPIN/";
 // Global GUI
 var effectController;
 var backX, backZ;
@@ -157,7 +157,7 @@ function loadScene() {
 	// suelo.rotation.x = -Math.PI/2;
 	// scene.add(suelo);
 
-	// Entorno habitacion 
+	// Entorno habitacion
 	var paredes = [ path+'posx6.png',path+'negx6.png',
                     path+'posy6.png',path+'negy6.png',
                     path+'posz6.png',path+'negz6.png'
@@ -219,7 +219,7 @@ function enterPassenger(elevator, passenger, seat){
 	var newZPos = 2;
 	var newXPos = 0;
 	var newYPos = - 5 + 2*seat;
-	
+
 	new TWEEN.Tween(passenger.position)
 		 .to(passenger.position.clone().setZ(elevator.position.z).setX(elevator.position.x), 500).onComplete(
 			 function() {
@@ -274,21 +274,21 @@ function generateBuilding() {
 		var floor = new THREE.BoxGeometry(50,20,0.5);
 		var tex_to_modify = tex_default;
 		//material = new THREE.MeshBasicMaterial({ color: 'grey', wireframe: false, side: THREE.DoubleSide});
-		material = new THREE.MeshPhongMaterial({ 
-			color:  "rgb(194, 155, 97)", 
+		material = new THREE.MeshPhongMaterial({
+			color:  "rgb(194, 155, 97)",
 			opacity: 0.7,
-			transparent: true}); // color suelo	
+			transparent: true}); // color suelo
 
 		var floorMesh = new THREE.Mesh(floor, material);
 		floorMesh.rotation.x = -Math.PI / 2;
 		floorMesh.position.y = height;
 
-		material = new THREE.MeshBasicMaterial({ color: 'pink', wireframe: true }); 
+		material = new THREE.MeshBasicMaterial({ color: 'pink', wireframe: true });
 		problem.add(floorMesh);
-		
+
 
 		if(i != 13){
-			
+
 			var wall = new THREE.PlaneGeometry(50, 10);
 			texturePared = new THREE.TextureLoader().load(path + 'pared'+ i+'.png'); // Añadir paredes fondo
 			materialPared = new THREE.MeshPhongMaterial({map: texturePared, side: THREE.DoubleSide});
@@ -296,7 +296,7 @@ function generateBuilding() {
 			wallMesh.position.y = height + 5;
 			wallMesh.position.z = -10;
 			problem.add(wallMesh);
-			
+
 
 			// Geometrias
 			// 512 x 512, size 300
@@ -368,7 +368,7 @@ function generateElevator(elevator, position_y, position_x, slow = true){
 	//var mat = new THREE.MeshBasicMaterial({ color, wireframe: false });
 
 	var elevMesh = new THREE.Mesh(cube_elevator, mat);
-	
+
 	elevator.add(elevMesh);
 	elevator.position.x = position_x;
 	elevator.position.y = height/2 + position_y;
@@ -394,7 +394,7 @@ function readLine( ) {
     return;
   }
   var tokens = lines[lineToRead].split(' ');
-
+  document.getElementById("actionInProgress").innerHTML = lines[lineToRead];
   lineToRead +=1;
   /* ACCIONES */
   if(tokens[1] == "GODOWN" || tokens[1] == "GOUP"){
@@ -556,7 +556,7 @@ function render(){
 		renderer.setViewport(window.innerWidth-(size*2), window.innerHeight-(size*2), size*2, size*2);
 	  renderer.render( scene, personalCamera );
 	}
-	
+
 }
 
 function updateAspectRatio(){
@@ -567,14 +567,14 @@ function updateAspectRatio(){
 	var size = Math.min(window.innerWidth, window.innerHeight)/4;
 
 	if(ar>1){
-		
+
 		if(personalCamera){
 		  personalCamera.left = l*ar;
 		  personalCamera.right = r*ar;
 		  personalCamera.bottom = b;
 		  personalCamera.top = t;
 		}
-		
+
 	  camera.left = l*ar;
 	  camera.right = r*ar;
 	  camera.bottom = b;
