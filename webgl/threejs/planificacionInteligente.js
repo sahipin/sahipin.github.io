@@ -405,7 +405,7 @@ function readLine( ) {
 			case "SLOWELEVATOR3":
 				elevatorToMove = elevator3;
 				break;
-			case "SLOWELEVATOR4":
+			case "FASTELEVATOR":
 				elevatorToMove = elevator4;
 				break;
 			default:
@@ -475,7 +475,7 @@ function readLine( ) {
 			case "SLOWELEVATOR3":
 				elevatorToMove = elevator3;
 				break;
-			case "SLOWELEVATOR4":
+			case "FASTELEVATOR":
 				elevatorToMove = elevator4;
 				break;
 			default:
